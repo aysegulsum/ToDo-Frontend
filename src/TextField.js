@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import { Button, Paper, Container, Typography } from "@mui/material/";
@@ -7,10 +8,11 @@ export default function Textfields() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
+  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    setMessage(""); // Clear the message state
+    setMessage("");
     try {
       const response = await fetch("http://localhost:8080/user/login", {
         method: "POST",
@@ -24,7 +26,11 @@ export default function Textfields() {
       });
 
       const messageFromServer = await response.text();
-      setMessage(messageFromServer);
+      if (response.status === 200) {
+        navigate("/userpage", { replace: true });
+      } else {
+        setMessage(messageFromServer);
+      }
     } catch (error) {
       setMessage("An error occurred. Please try again.");
     }

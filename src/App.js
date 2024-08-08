@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Appbar from "./Appbar";
 import Textfields from "./TextField";
+import UserPage from "./UserPage";
 
 function App() {
   const [message, setMessage] = useState("");
@@ -13,11 +15,15 @@ function App() {
   }, []);
 
   return (
-    <div classname="App">
+    <BrowserRouter>
       <Appbar />
-      <Textfields />
+      <Routes>
+        <Route path="/" element={<Textfields />} />
+        <Route path="/userpage" element={<UserPage />} />
+      </Routes>
+
       <p align="center">{message}</p>
-    </div>
+    </BrowserRouter>
   );
 }
 export default App;
