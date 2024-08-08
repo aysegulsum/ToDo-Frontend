@@ -1,6 +1,39 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from "react";
+import Appbar from "./Appbar";
+import Textfields from "./TextField";
 
+/*function WelcomeMessage() {
+    const [message, setMessage] = useState('');
+
+    useEffect(() => {
+        fetch('http://localhost:8080/welcome')
+            .then(response => response.text())
+            .then(data => setMessage(data))
+            .catch(error => console.error('Error fetching message:', error));
+    }, []);
+
+    return (
+        <div>
+          <AppBar/>
+            <h1>Hoş Geldiniz!</h1>
+            <p>{message}</p>
+        </div>
+    );
+}
+
+export default WelcomeMessage;*/
+
+function App() {
+  return (
+    <div classname="App">
+      <Appbar />
+      <Textfields />
+    </div>
+  );
+}
+export default App;
+
+/*
 function App() {
   return (
     <div className="App">
@@ -22,4 +55,4 @@ function App() {
   );
 }
 
-export default App;
+export default App;*/
