@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Appbar from "./Appbar";
 import UserPage from "./UserPage";
 import LoginPage from "./LoginPage";
+import ColorCheckboxes from "./CheckBox";
 
 function App() {
   const [message, setMessage] = useState("");
@@ -21,7 +22,6 @@ function App() {
         <Route path="/" element={<LoginPage />} />
         <Route path="/userpage" element={<UserPage />} />
       </Routes>
-
       <p align="center">{message}</p>
     </BrowserRouter>
   );

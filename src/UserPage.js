@@ -1,4 +1,12 @@
 import React, { useEffect, useState } from "react";
+import "./Styles.css";
+import { Paper } from "@mui/material/";
+import { pink } from "@mui/material/colors";
+import ColorCheckboxes from "./CheckBox";
+
+import Checkbox from "@mui/material/Checkbox";
+
+const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
 const UserPage = () => {
   const [categories, setCategories] = useState([]);
@@ -33,16 +41,36 @@ const UserPage = () => {
   }
   return (
     <div>
-      {categories.map((category) => (
-        <div key={category.id}>
-          <h2>{category.name}</h2>
-          <ul>
-            {category.todos.map((todo) => (
-              <li key={todo.id}>{todo.description}</li>
-            ))}
-          </ul>
-        </div>
-      ))}
+      <Paper elevation={10} sx={{ padding: 5, margin: 3 }}>
+        <flexbox>
+          <h2 className="category-header"> CATEGORIES</h2>
+        </flexbox>
+        {categories.map((category) => (
+          <div key={category.id}>
+            <h2 className="category-text">{category.name}</h2>
+            <ul>
+              {category.todos.map((todo) => (
+                <li key={todo.id}>
+                  <span style={{ flex: 10 }}>{todo.description}</span>
+                  <input type="checkbox" checked={todo.completed} />
+                  <ColorCheckboxes />
+
+                  <Checkbox
+                    {...label}
+                    checked={todo.started}
+                    sx={{
+                      color: pink[800],
+                      "&.Mui-checked": {
+                        color: pink[600],
+                      },
+                    }}
+                  />
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </Paper>
     </div>
   );
 };

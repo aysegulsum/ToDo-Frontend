@@ -1,0 +1,18 @@
+/*CategoryList.cheaderss */
+.category-text {
+    background-color: #ecb2ec; /* Lila rengi */
+    color: rgb(145, 18, 130); /* Yazı rengini beyaz yapalım */
+    padding: 2px; /* Metni daha güzel yerleştirmek için biraz padding ekleyelim */
+    border-radius: 4px; /* Köşeleri yuvarlamak için */
+    display: inline-block; /* Arka plan renginin sadece metnin genişliğinde olmasını sağlamak için */
+    margin-top: 1px; /* Üstten biraz boşluk bırakmak için */
+}
+.category-header{
+    background-color: #f1c8a6; /* Lila rengi */
+    color: rgb(222, 123, 36); /* Yazı rengini beyaz yapalım */
+    padding: 5px; /* Metni daha güzel yerleştirmek için biraz padding ekleyelim */
+    border-radius: 10px; /* Köşeleri yuvarlamak için */
+    display: block; /* Arka plan renginin sadece metnin genişliğinde olmasını sağlamak için */
+    margin: 30px auto; /* Üstten biraz boşluk bırakmak için */
+    text-align: center;
+}
