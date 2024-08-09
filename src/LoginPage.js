@@ -3,8 +3,9 @@ import { useNavigate } from "react-router-dom";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import { Button, Paper, Container, Typography } from "@mui/material/";
+import "font-awesome/css/font-awesome.min.css";
 
-export default function Textfields() {
+export default function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
@@ -45,6 +46,15 @@ export default function Textfields() {
 
         <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
           <form onSubmit={handleLogin}>
+            <label>
+              <img
+                src="logo192.png"
+                alt="User Icon"
+                width="40"
+                height="40"
+                align="center"
+              />
+            </label>
             <TextField
               id="outlined-basic"
               label="Name"
@@ -54,6 +64,14 @@ export default function Textfields() {
               onChange={(e) => setUsername(e.target.value)}
               placeholder="Username"
             />
+            <label>
+              <i
+                className="fa fa-user"
+                aria-hidden="true"
+                size="2x"
+                style={{ fontSize: 36, marginBottom: 10 }}
+              />
+            </label>
             <TextField
               id="outlined-basic"
               label="Password"

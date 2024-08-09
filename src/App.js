@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Appbar from "./Appbar";
-import Textfields from "./TextField";
 import UserPage from "./UserPage";
+import LoginPage from "./LoginPage";
 
 function App() {
   const [message, setMessage] = useState("");
@@ -18,7 +18,7 @@ function App() {
     <BrowserRouter>
       <Appbar />
       <Routes>
-        <Route path="/" element={<Textfields />} />
+        <Route path="/" element={<LoginPage />} />
         <Route path="/userpage" element={<UserPage />} />
       </Routes>
 
