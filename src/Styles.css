@@ -16,3 +16,42 @@
     margin: 30px auto; /* Üstten biraz boşluk bırakmak için */
     text-align: center;
 }
+
+
+.form-group{
+    margin: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.form-group input{
+    border-radius: 5px;
+}
+
+.form-group button{
+    margin: 5px;
+    padding: 5px;
+    border-radius: 5px;
+    color: white;
+}
+
+.form-group button:hover{
+    background-color: #ecb2ec;
+    color: #f1c8a6;
+}
+
+.form-group label {
+    border-radius: 5px;
+}
+
+.login-text {
+    background-color: #ecb2ec; /* Lila rengi */
+    color: rgb(145, 18, 130); /* Yazı rengini beyaz yapalım */
+    padding: 2px; /* Metni daha güzel yerleştirmek için biraz padding ekleyelim */
+    border-radius: 4px; /* Köşeleri yuvarlamak için */
+    display: inline-block; /* Arka plan renginin sadece metnin genişliğinde olmasını sağlamak için */
+    margin-top: 1px; /* Üstten biraz boşluk bırakmak için */
+    margin-left: 100px;
+}
