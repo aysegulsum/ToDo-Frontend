@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import "./Styles.css";
-import { Paper } from "@mui/material/";
+import { Paper, Slide } from "@mui/material/";
 import { pink } from "@mui/material/colors";
 import ColorCheckboxes from "./CheckBox";
+import DiscreteSlider from "./Slider";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 
 import Checkbox from "@mui/material/Checkbox";
 
@@ -51,20 +53,37 @@ const UserPage = () => {
             <ul>
               {category.todos.map((todo) => (
                 <li key={todo.id}>
-                  <span style={{ flex: 10 }}>{todo.description}</span>
-                  <input type="checkbox" checked={todo.completed} />
-                  <ColorCheckboxes />
-
-                  <Checkbox
-                    {...label}
-                    checked={todo.started}
-                    sx={{
-                      color: pink[800],
-                      "&.Mui-checked": {
-                        color: pink[600],
-                      },
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
                     }}
-                  />
+                  >
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        width: "100%",
+                        padding: 10,
+                        margin: 5,
+                        border: "1px solid #ccc",
+                        borderRadius: 5,
+
+                        backgroundColor: "#f9f9f9",
+                      }}
+                    >
+                      <span style={{ flex: 10 }}>{todo.description}</span>
+                      <div style={{ marginRight: 30 }}>
+                        {" "}
+                        <DiscreteSlider />{" "}
+                      </div>
+                    </div>
+                    <DeleteOutlineIcon
+                      style={{ color: pink[800], marginRight: 10 }}
+                    />
+                  </div>
                 </li>
               ))}
             </ul>
@@ -82,3 +101,18 @@ export default UserPage;
       <p>This is a protected page.</p>
     </div>
     */
+
+/*    <input type="checkbox" checked={todo.completed} />
+                  <ColorCheckboxes />
+
+                  <Checkbox
+                    {...label}
+                    checked={todo.started}
+                    sx={{
+                      color: pink[800],
+                      "&.Mui-checked": {
+                        color: pink[600],
+                      },
+                    }}
+                  />
+                  */
