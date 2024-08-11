@@ -49,7 +49,40 @@ const UserPage = () => {
         </flexbox>
         {categories.map((category) => (
           <div key={category.id}>
-            <h2 className="category-text">{category.name}</h2>
+            <div style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "baseline",
+            }}>
+              <h2 className="category-text">{category.name}</h2>
+              <div style={{
+                weight: 50,
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}>
+
+                <Checkbox
+                    {...label}
+                    checked={category.done}
+                    sx={{
+                      color: pink[800],
+                      "&.Mui-checked": {
+                        color: pink[600],
+                      },
+                    }}
+                />
+                Completed
+                <DeleteOutlineIcon
+                    style={{ color: pink[800], marginRight: 10 }}
+                />
+              </div>
+
+
+
+
+            </div>
+
             <ul>
               {category.todos.map((todo) => (
                 <li key={todo.id}>
