@@ -14,12 +14,6 @@ const UserPage = () => {
   const [categories, setCategories] = useState([]);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState("");
-  /*useEffect(()=> {
-    fetch("http://localhost:8080/getcategories")
-    .then(response => response.json())
-    .then(data => setCategories(data))
-    
-},[]);*/
 
   useEffect(() => {
     fetch("http://localhost:8080/category/getcategories")
@@ -56,15 +50,16 @@ const UserPage = () => {
             }}>
               <h2 className="category-text">{category.name}</h2>
               <div style={{
-                weight: 50,
+
                 display: "flex",
                 justifyContent: "space-between",
                 alignItems: "center",
+                marginRight: 500,
               }}>
 
                 <Checkbox
                     {...label}
-                    checked={category.done}
+                    checked={category.completed}
                     sx={{
                       color: pink[800],
                       "&.Mui-checked": {
@@ -73,11 +68,21 @@ const UserPage = () => {
                     }}
                 />
                 Completed
+
+              </div>
+
+              <div
+                    style={{
+                        display: "flex",
+                        justifyContent: "space-evenly",
+                        alignItems: "center",
+                    }}
+                    >
+                Delete category
                 <DeleteOutlineIcon
                     style={{ color: pink[800], marginRight: 10 }}
                 />
               </div>
-
 
 
 
@@ -109,8 +114,7 @@ const UserPage = () => {
                     >
                       <span style={{ flex: 10 }}>{todo.description}</span>
                       <div style={{ marginRight: 30 }}>
-                        {" "}
-                        <DiscreteSlider />{" "}
+                        <DiscreteSlider started={todo.started} completed={todo.completed} />{" "}
                       </div>
                     </div>
                     <DeleteOutlineIcon
