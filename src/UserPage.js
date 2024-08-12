@@ -114,7 +114,8 @@ const UserPage = () => {
                     >
                       <span style={{ flex: 10 }}>{todo.description}</span>
                       <div style={{ marginRight: 30 }}>
-                        <DiscreteSlider started={todo.started} completed={todo.completed} />{" "}
+
+                        <DiscreteSlider started={todo.started} completed={todo.completed} todoId={todo.id}/>{" "}
                       </div>
                     </div>
                     <DeleteOutlineIcon
