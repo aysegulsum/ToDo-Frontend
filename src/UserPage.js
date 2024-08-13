@@ -51,6 +51,7 @@ const UserPage = () => {
             });
     };
 
+
     const handleSliderChange = (newValue, todoId) => {
         setSliderValue({newValue, todoId});
     };
@@ -174,7 +175,7 @@ const UserPage = () => {
                                                         onSliderChange={handleSliderChange}/>{" "}
                                                 </div>
                                             </div>
-                                        <Button>
+                                        <Button onClick={() => handleDeleteTodo(todo.id)}>
                                                 <DeleteOutlineIcon
                                                     style={{color: grey[400], marginRight: 10}}
 
