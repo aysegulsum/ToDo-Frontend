@@ -51,6 +51,38 @@ const UserPage = () => {
             });
     };
 
+    const handleDeleteCategory = (categoryId) => {
+        fetch(`http://localhost:8080/category/delete/${categoryId}`, {
+            method: "DELETE",
+        })
+            .then((response) => {
+                if (response.ok) {
+                    setCategories((prevCategories) =>
+                        prevCategories.filter((category) => category.id !== categoryId)
+                    );
+                } else {
+                    console.error("Failed to delete category");
+                }
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+            });
+    };
+
+    const confirmDeleteCategory = (category) => {
+        const message = category.completed
+            ? "Do you want to delete this completed category?"
+            : "This category is not completed. Do you still want to delete it?";
+
+
+            const confirmDelete = window.confirm(message);
+            if (!confirmDelete) {
+                return;
+            }
+
+        handleDeleteCategory(category.id);
+    };
+
 
     const handleSliderChange = (newValue, todoId) => {
         setSliderValue({newValue, todoId});
@@ -129,6 +161,7 @@ const UserPage = () => {
                                         Completed
                                     </Box>
                                         <Button
+                                            onClick={() => confirmDeleteCategory(category)}
                                             style={{marginRight: 10}}
                                         >
 
