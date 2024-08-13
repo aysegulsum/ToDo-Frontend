@@ -13,20 +13,19 @@ const label = {inputProps: {"aria-label": "Checkbox demo"}};
 
 const UserPage = () => {
     const [categories, setCategories] = useState([]);
-    const [error, setError] = useState("");
-    const [loading, setLoading] = useState("");
-    const [sliderValue, setSliderValue] = useState(null);
+
+
+
 
     useEffect(() => {
         fetch("http://localhost:8080/category/getcategories")
             .then((response) => response.json())
             .then((data) => {
                 setCategories(data);
-                setLoading(false);
+               console.log(data);
             })
             .catch((error) => {
-                setError(error);
-                setLoading(false);
+                console.error("Error:", error);
             });
     }, []);
 
@@ -152,7 +151,8 @@ const UserPage = () => {
 
 
     const handleSliderChange = (newValue, todoId) => {
-        setSliderValue({newValue, todoId});
+
+
     };
 
     const confirmSliderChange = (newValue, todoID) => {
@@ -198,39 +198,6 @@ const UserPage = () => {
                 console.error("Error:", error);
             });
     };
-
-  /* const handleSubmit = async (e) => {
-        console.log("Submitting changes");
-        e.preventDefault();
-        if (sliderValue) {
-            const {newValue, todoId} = sliderValue;
-            fetch(`http://localhost:8080/todo/updatecomplete/${todoId}`, {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    str: newValue === 100
-                }),
-            })
-                .then(response => response.text())
-                .then(data => {
-                    console.log("Success:", data);
-                })
-                .catch((error) => {
-                    console.error("Error:", error);
-                });
-        } else {
-            console.log("No changes to save");
-        }
-    };*/
-    if (loading) {
-        return <div>Loading...</div>;
-    }
-
-    if (error) {
-        return <div>Error: {error.message}</div>;
-    }
 
     return (
         <div>
