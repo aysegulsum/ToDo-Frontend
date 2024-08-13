@@ -7,6 +7,7 @@ import LoginPage from "./LoginPage";
 import ProtectedRoute from "./ProtectedRoute";
 
 function App() {
+
   const [message, setMessage] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 

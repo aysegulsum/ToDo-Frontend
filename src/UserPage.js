@@ -15,19 +15,33 @@ const UserPage = () => {
     const [categories, setCategories] = useState([]);
 
 
-
-
-    useEffect(() => {
+   /* useEffect(() => {
         fetch("http://localhost:8080/category/getcategories")
             .then((response) => response.json())
             .then((data) => {
                 setCategories(data);
-               console.log(data);
+                console.log(data);
             })
             .catch((error) => {
                 console.error("Error:", error);
             });
+    }, []);*/
+    useEffect(() => {
+        const intervalId = setInterval(() => {
+            fetch("http://localhost:8080/category/getcategories")
+                .then((response) => response.json())
+                .then((data) => {
+                    setCategories(data);
+                    console.log(data);
+                })
+                .catch((error) => {
+                    console.error("Error:", error);
+                });
+        }, 1000);
+
+        return () => clearInterval(intervalId); // Temizleme
     }, []);
+
 
     const handleDeleteTodo = (todoId) => {
         fetch(`http://localhost:8080/todo/delete/${todoId}`, {
@@ -102,7 +116,7 @@ const UserPage = () => {
             .then((response) => response.text())
             .then((data) => {
                 console.log("Success:", data);
-                window.location.reload();
+              //  window.location.reload();
             })
             .catch((error) => {
                 console.error("Error:", error);
@@ -127,7 +141,7 @@ const UserPage = () => {
             .then((response) => response.text())
             .then((data) => {
                 console.log("Success:", data);
-                window.location.reload();
+               // window.location.reload();
             })
             .catch((error) => {
                 console.error("Error:", error);
@@ -300,7 +314,7 @@ const UserPage = () => {
                                                     completed={todo.completed}
                                                     todoId={todo.id}
                                                     onSliderChange={handleSliderChange}
-                                                    onMouseUp= {confirmSliderChange}/>{" "}
+                                                    onMouseUp={confirmSliderChange}/>{" "}
                                             </div>
                                         </div>
                                         <Button onClick={() => confirmDeleteTodo(todo)}>
