@@ -31,7 +31,7 @@ const DiscreteSlider = ({ started, completed, todoId, onSliderChange }) => {
   }, [started, completed]);
 
   const handleChange = (event, newValue) => {
-    if ((value === 0 && newValue === 50) || (value === 50 && newValue === 100)) {
+    if ((newValue === 50) || (value === 50 && newValue === 100)) {
       setValue(newValue);
       onSliderChange(newValue, todoId);
     }

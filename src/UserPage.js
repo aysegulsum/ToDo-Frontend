@@ -5,9 +5,9 @@ import {pink, grey} from "@mui/material/colors";
 import AddCircleOutlineSharpIcon from '@mui/icons-material/AddCircleOutlineSharp';
 import DiscreteSlider from "./Slider";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-
 import Checkbox from "@mui/material/Checkbox";
-import Box from "@mui/material/Box";
+import {FormControlLabel} from "@mui/material";
+
 
 const label = {inputProps: {"aria-label": "Checkbox demo"}};
 
@@ -51,6 +51,34 @@ const UserPage = () => {
             });
     };
 
+    const confirmDeleteTodo = (todo) => {
+        const message = todo.completed
+            ? "Do you want to delete this completed todo?"
+            : "This todo is not completed. Do you still want to delete it?";
+
+
+        const confirmDelete = window.confirm(message);
+        if (!confirmDelete) {
+            return;
+        }
+
+        handleDeleteTodo(todo.id);
+    };
+
+    const confirmChangeSlider = (todo) => {
+        const message = todo.completed
+            ? "Do you want to delete this completed todo?"
+            : "This todo is not completed. Do you still want to delete it?";
+
+
+        const confirmDelete = window.confirm(message);
+        if (!confirmDelete) {
+            return;
+        }
+
+        handleDeleteTodo(todo.id);
+    };
+
     const handleDeleteCategory = (categoryId) => {
         fetch(`http://localhost:8080/category/delete/${categoryId}`, {
             method: "DELETE",
@@ -69,19 +97,72 @@ const UserPage = () => {
             });
     };
 
+    const handleAddTodo = (id) => {
+        const newTodo = prompt("Enter the description for the new todo:");
+        if (!newTodo) {
+            return;
+        }
+
+        fetch(`http://localhost:8080/todo/add`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                description: newTodo,
+                categoryId: id,
+            }),
+        })
+            .then((response) => response.text())
+            .then((data) => {
+                console.log("Success:", data);
+                window.location.reload();
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+            });
+    };
+
+    const handleAddCategory = () => {
+        const newName = prompt("Enter the name of new category:");
+        if (!newName) {
+            return;
+        }
+
+        fetch(`http://localhost:8080/category/add`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                name: newName,
+            }),
+        })
+            .then((response) => response.text())
+            .then((data) => {
+                console.log("Success:", data);
+                window.location.reload();
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+            });
+    };
+
+
     const confirmDeleteCategory = (category) => {
         const message = category.completed
             ? "Do you want to delete this completed category?"
             : "This category is not completed. Do you still want to delete it?";
 
 
-            const confirmDelete = window.confirm(message);
-            if (!confirmDelete) {
-                return;
-            }
+        const confirmDelete = window.confirm(message);
+        if (!confirmDelete) {
+            return;
+        }
 
         handleDeleteCategory(category.id);
     };
+
 
 
     const handleSliderChange = (newValue, todoId) => {
@@ -124,10 +205,21 @@ const UserPage = () => {
         <div>
             <Paper elevation={10} sx={{padding: 5, margin: 3}}>
                 <form onSubmit={handleSubmit}>
-                        <h2 className="category-header"> CATEGORIES</h2>
-
+                    <h2 className="category-header"> CATEGORIES</h2>
+                    <div style={{
+                        display: "flex",
+                        justifyContent: "flex-end"
+                    }}
+                    >
+                        <Button style={{marginRight: 10}} onClick={() => handleAddCategory()}>
+                            <AddCircleOutlineSharpIcon style={{color: pink[800]}}/>
+                            Add Category
+                        </Button>
+                    </div>
                     {categories.map((category) => (
                         <div style={{marginTop: 85}} key={category.id}>
+
+
                             <div style={{
                                 display: "flex",
                                 justifyContent: "space-between",
@@ -138,38 +230,42 @@ const UserPage = () => {
                                     display: "flex",
                                     justifyContent: "space-between",
                                     alignItems: "center",
-                                    width:510,
                                 }}>
-                                    <Button style={{marginRight: 10}}>
+                                    <FormControlLabel
+                                        control={
+                                            <Checkbox
+                                                {...label}
+                                                checked={category.completed}
+                                                sx={{
+                                                    color: pink[800],
+                                                    "&.Mui-checked": {
+                                                        color: pink[600],
+                                                    },
+                                                }}
+                                            />
+                                        }
+                                        label="Completed"
+                                    />
+
+                                    <Button style={{marginRight: 10}} onClick={() => handleAddTodo(category.id)}>
                                         <AddCircleOutlineSharpIcon
                                             style={{color: pink[800]}}
                                         />
                                         Add Todo
                                     </Button>
 
-                                    <Box>
-                                        <Checkbox
-                                            {...label}
-                                            checked={category.completed}
-                                            sx={{
-                                                color: pink[800],
-                                                "&.Mui-checked": {
-                                                    color: pink[600],
-                                                },
-                                            }}
-                                        />
-                                        Completed
-                                    </Box>
-                                        <Button
-                                            onClick={() => confirmDeleteCategory(category)}
-                                            style={{marginRight: 10}}
-                                        >
 
+                                    <Button
+                                        onClick={() => confirmDeleteCategory(category)}
+                                        style={{marginRight: 10}}
 
-                                        Delete category
+                                    >
+
                                         <DeleteOutlineIcon
                                             style={{color: pink[800], marginRight: 10}}
                                         />
+                                        Delete category
+
                                     </Button>
                                 </div>
 
@@ -177,7 +273,7 @@ const UserPage = () => {
 
                             <ul>
                                 {category.todos.map((todo) => (
-                                    <li key={todo.id}>
+                                    <li key={todo.id + "" + category.id}>
                                         <div
                                             style={{
                                                 display: "flex",
@@ -208,7 +304,7 @@ const UserPage = () => {
                                                         onSliderChange={handleSliderChange}/>{" "}
                                                 </div>
                                             </div>
-                                        <Button onClick={() => handleDeleteTodo(todo.id)}>
+                                            <Button onClick={() => confirmDeleteTodo(todo)}>
                                                 <DeleteOutlineIcon
                                                     style={{color: grey[400], marginRight: 10}}
 
@@ -222,15 +318,25 @@ const UserPage = () => {
                             </ul>
                         </div>
                     ))}
-                    <Button
-                        type="submit"
-                        variant="contained"
-                        color="success"
-                        sx={{backgroundColor: "purple", color: "white"}}
-                        fullWidth
-                    >
-                        SUBMIT
-                    </Button>
+                    <div style={{
+                        display: "flex"
+                    }
+                    }>
+                        <Button
+                            type="submit"
+                            variant="contained"
+                            color="success"
+                            sx={{
+                                marginRight: 70,
+                                marginLeft: 70,
+                                width: 300, backgroundColor: "purple", color: "white"
+                            }}
+                            fullWidth
+                        >
+                            SUBMIT
+                        </Button>
+                    </div>
+
                 </form>
             </Paper>
         </div>
