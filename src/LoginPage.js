@@ -1,3 +1,4 @@
+// src/LoginPage.js
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Box from "@mui/material/Box";
@@ -5,10 +6,10 @@ import TextField from "@mui/material/TextField";
 import { Button, Paper, Container, Typography } from "@mui/material/";
 import "font-awesome/css/font-awesome.min.css";
 import PeopleAltSharpIcon from "@mui/icons-material/PeopleAltSharp";
-import { pink, orange } from "@mui/material/colors";
+import { orange } from "@mui/material/colors";
 import LockSharpIcon from "@mui/icons-material/LockSharp";
 
-export default function LoginPage() {
+export default function LoginPage({ setIsAuthenticated }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
@@ -31,6 +32,7 @@ export default function LoginPage() {
 
       const messageFromServer = await response.text();
       if (response.status === 200) {
+        setIsAuthenticated(true);
         navigate("/userpage", { replace: true });
       } else {
         setMessage(messageFromServer);
@@ -106,12 +108,3 @@ export default function LoginPage() {
     </Container>
   );
 }
-/*
-    <i
-                className="fa fa-lock"
-                aria-hidden="true"
-                size="2x"
-                style={{ fontSize: 36, marginBottom: 10 }}
-                sx={{ color: pink[500] }}
-              />
-              */
