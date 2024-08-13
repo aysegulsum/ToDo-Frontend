@@ -17,7 +17,7 @@ const marks = [
   },
 ];
 
-const DiscreteSlider = ({ started, completed, todoId, onSliderChange }) => {
+const DiscreteSlider = ({ started, completed, todoId, onSliderChange, onMouseUp }) => {
   const [value, setValue] = useState(0);
 
   useEffect(() => {
@@ -37,12 +37,17 @@ const DiscreteSlider = ({ started, completed, todoId, onSliderChange }) => {
     }
   };
 
+  const handleMouseUp = () => {
+    onMouseUp(value, todoId);
+  };
+
   return (
     <Box sx={{ width: 150 }}>
       <Slider
         aria-label="Steps"
         value={value}
         onChange={handleChange}
+        onMouseUp={handleMouseUp}
         step={50}
         marks={marks}
         min={0}
