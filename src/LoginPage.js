@@ -9,7 +9,7 @@ import PeopleAltSharpIcon from "@mui/icons-material/PeopleAltSharp";
 import { orange } from "@mui/material/colors";
 import LockSharpIcon from "@mui/icons-material/LockSharp";
 
-export default function LoginPage({ setIsAuthenticated }) {
+export default function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
@@ -32,13 +32,15 @@ export default function LoginPage({ setIsAuthenticated }) {
 
       const messageFromServer = await response.text();
       if (response.status === 200) {
-        setIsAuthenticated(true);
+        localStorage.setItem("isAuthenticated", "true");
         navigate("/userpage", { replace: true });
       } else {
         setMessage(messageFromServer);
+        localStorage.setItem("isAuthenticated", "false");
       }
     } catch (error) {
       setMessage("An error occurred. Please try again.");
+      localStorage.setItem("isAuthenticated", "false");
     }
   };
 
@@ -61,7 +63,7 @@ export default function LoginPage({ setIsAuthenticated }) {
                 />
               </label>
               <TextField
-                id="outlined-basic"
+                id="outlined-basic-name"
                 label="Name"
                 variant="outlined"
                 type="text"
@@ -78,7 +80,7 @@ export default function LoginPage({ setIsAuthenticated }) {
                 sx={{ color: orange[300] }}
               />
               <TextField
-                id="outlined-basic"
+                id="outlined-basic-password"
                 label="Password"
                 variant="outlined"
                 type="password"

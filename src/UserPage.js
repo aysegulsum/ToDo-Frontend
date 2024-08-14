@@ -37,9 +37,9 @@ const UserPage = () => {
                 .catch((error) => {
                     console.error("Error:", error);
                 });
-        }, 1000);
+        }, 3000);
 
-        return () => clearInterval(intervalId); // Temizleme
+        return () => clearInterval(intervalId);
     }, []);
 
 
