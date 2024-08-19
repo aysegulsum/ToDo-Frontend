@@ -13,7 +13,7 @@ export default function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
-  const navigate = useNavigate();
+  const Navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -33,7 +33,9 @@ export default function LoginPage() {
       const messageFromServer = await response.text();
       if (response.status === 200) {
         localStorage.setItem("isAuthenticated", "true");
-        navigate("/userpage", { replace: true });
+        console.log("User is authenticated.");
+        console.log("Message from server: ", messageFromServer);
+        Navigate("/userpage");
       } else {
         setMessage(messageFromServer);
         localStorage.setItem("isAuthenticated", "false");

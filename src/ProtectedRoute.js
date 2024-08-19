@@ -1,9 +1,11 @@
-// src/ProtectedRoute.js
-import React from "react";
 import { Navigate } from "react-router-dom";
-
-const ProtectedRoute = ({ element: Component, isAuthenticated, ...rest }) => {
-  return isAuthenticated ? <Component {...rest} /> : <Navigate to="/" />;
-};
+import React from "react";
+function ProtectedRoute({ element: Component, isAuthenticated, ...rest }) {
+  return isAuthenticated === "true" ? (
+    <Component {...rest} />
+  ) : (
+    <Navigate to="/" replace />
+  );
+}
 
 export default ProtectedRoute;

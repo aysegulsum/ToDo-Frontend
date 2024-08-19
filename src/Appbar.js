@@ -30,6 +30,18 @@ export default function Appbar() {
           >
             React Learning Project
           </Typography>
+          <Button
+            onClick={() => {
+              localStorage.clear();
+              window.location.reload();
+            }}
+            style={{
+              backgroundColor: "grey",
+              color: "white",
+            }}
+          >
+            LOG OUT
+          </Button>
         </Toolbar>
       </AppBar>
     </Box>

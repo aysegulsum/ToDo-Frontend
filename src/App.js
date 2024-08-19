@@ -7,9 +7,7 @@ import LoginPage from "./LoginPage";
 import ProtectedRoute from "./ProtectedRoute";
 
 function App() {
-
   const [message, setMessage] = useState("");
-
 
   useEffect(() => {
     fetch("http://localhost:8080/welcome")
@@ -22,13 +20,13 @@ function App() {
     <BrowserRouter>
       <Appbar />
       <Routes>
-        <Route path="/" element={<LoginPage/>} />
+        <Route path="/" element={<LoginPage />} />
         <Route
           path="/userpage"
           element={
             <ProtectedRoute
               element={UserPage}
-              isAuthenticated={localStorage.getItem("isAuthenticated") === "true"}
+              isAuthenticated={localStorage.getItem("isAuthenticated")}
             />
           }
         />
