@@ -14,7 +14,6 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const Navigate = useNavigate();
-
   const handleLogin = async (e) => {
     e.preventDefault();
     setMessage("");
@@ -35,7 +34,12 @@ export default function LoginPage() {
         localStorage.setItem("isAuthenticated", "true");
         console.log("User is authenticated.");
         console.log("Message from server: ", messageFromServer);
-        Navigate("/userpage");
+        try {
+          Navigate("/userpage");
+          console.log("Navigating to /userpage");
+        } catch (error) {
+          console.error("Error fetching message:", error);
+        }
       } else {
         setMessage(messageFromServer);
         localStorage.setItem("isAuthenticated", "false");

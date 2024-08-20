@@ -21,15 +21,9 @@ function App() {
       <Appbar />
       <Routes>
         <Route path="/" element={<LoginPage />} />
-        <Route
-          path="/userpage"
-          element={
-            <ProtectedRoute
-              element={UserPage}
-              isAuthenticated={localStorage.getItem("isAuthenticated")}
-            />
-          }
-        />
+        <Route element={<ProtectedRoute />}>
+          <Route path="/userpage" element={<UserPage />} />
+        </Route>
       </Routes>
       <p align="center">{message}</p>
     </BrowserRouter>
