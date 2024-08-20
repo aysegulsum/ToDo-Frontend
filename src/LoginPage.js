@@ -32,6 +32,7 @@ export default function LoginPage() {
       const messageFromServer = await response.text();
       if (response.status === 200) {
         localStorage.setItem("isAuthenticated", "true");
+        localStorage.setItem("username", username);
         console.log("User is authenticated.");
         console.log("Message from server: ", messageFromServer);
         try {
@@ -70,12 +71,15 @@ export default function LoginPage() {
               </label>
               <TextField
                 id="outlined-basic-name"
-                label="Name"
+                label="UserName"
                 variant="outlined"
                 type="text"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                placeholder="Username"
+                placeholder="admin51"
+                InputLabelProps={{
+                  shrink: true,
+                }}
               />
             </div>
             <div className="form-group">
@@ -92,7 +96,10 @@ export default function LoginPage() {
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="Password"
+                placeholder="pass.123"
+                InputLabelProps={{
+                  shrink: true,
+                }}
               />
             </div>
 
