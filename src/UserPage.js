@@ -5,7 +5,6 @@ import {
   Button,
   Card,
   TextField,
-  Textarea,
   Typography,
   Box,
 } from "@mui/material/";
@@ -16,6 +15,7 @@ import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import Checkbox from "@mui/material/Checkbox";
 import { FormControlLabel } from "@mui/material";
 import MessageIcon from "@mui/icons-material/Message";
+import { v4 as uuidv4 } from "uuid";
 
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
@@ -25,19 +25,19 @@ const UserPage = () => {
   const [receiver, setReceiver] = useState("");
 
   useEffect(() => {
-    const intervalId = setInterval(() => {
-      fetch("http://localhost:8080/category/getcategories")
-        .then((response) => response.json())
-        .then((data) => {
-          setCategories(data);
-          console.log(data);
-        })
-        .catch((error) => {
-          console.error("Error:", error);
-        });
-    }, 3000);
+    // const intervalId = setInterval(() => {
+    fetch("http://localhost:8080/category/getcategories")
+      .then((response) => response.json())
+      .then((data) => {
+        setCategories(data);
+        console.log(data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+    // }, 3000);
 
-    return () => clearInterval(intervalId);
+    // return () => clearInterval(intervalId);
   }, []);
 
   const handleDeleteTodo = (todoId) => {
@@ -100,8 +100,8 @@ const UserPage = () => {
       },
       body: JSON.stringify({
         sender: localStorage.getItem("username"),
-        receiver: receiver,
         message: text,
+        receiver: receiver,
         todoId: id,
       }),
     })
@@ -308,6 +308,7 @@ const UserPage = () => {
                     }}
                   >
                     <div
+                      key={uuidv4()}
                       style={{
                         display: "flex",
                         justifyContent: "space-between",
@@ -331,7 +332,10 @@ const UserPage = () => {
                         />{" "}
                       </div>
                     </div>
-                    <Button onClick={() => confirmDeleteTodo(todo)}>
+                    <Button
+                      key={uuidv4()}
+                      onClick={() => confirmDeleteTodo(todo)}
+                    >
                       <DeleteOutlineIcon
                         style={{ color: grey[400], marginRight: 10 }}
                       />
@@ -339,9 +343,9 @@ const UserPage = () => {
                   </div>
                   <ul>
                     {todo.comments.map((comment) => (
-                      <li key={comment.id + "" + category.id}>
-                        <details>
-                          <summary>See comments</summary>
+                      <details>
+                        <summary>See comments</summary>
+                        <li key={comment.id + "" + category.id + "" + todo.id}>
                           <Card
                             variant="outlined"
                             sx={{
@@ -397,12 +401,12 @@ const UserPage = () => {
                               placeholder="Type your message here!"
                               onChange={(e) => setText(e.target.value)}
                             />
-                            <Button onClick={handleAddComment(todo.id)}>
+                            <Button onClick={() => handleAddComment(todo.id)}>
                               Send
                             </Button>
                           </div>
-                        </details>
-                      </li>
+                        </li>
+                      </details>
                     ))}
                   </ul>
                 </li>
