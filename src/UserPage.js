@@ -8,7 +8,7 @@ import {
   Typography,
   Box,
 } from "@mui/material/";
-import { pink, grey } from "@mui/material/colors";
+import { pink, grey, green, lightBlue } from "@mui/material/colors";
 import AddCircleOutlineSharpIcon from "@mui/icons-material/AddCircleOutlineSharp";
 import DiscreteSlider from "./Slider";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
@@ -23,6 +23,14 @@ const UserPage = () => {
   const [categories, setCategories] = useState([]);
   const [text, setText] = useState("");
   const [receiver, setReceiver] = useState("");
+  const [detailsVisibility, setDetailsVisibility] = useState({});
+
+  const toggleDetails = (todoId) => {
+    setDetailsVisibility((prev) => ({
+      ...prev,
+      [todoId]: !prev[todoId],
+    }));
+  };
 
   useEffect(() => {
     // const intervalId = setInterval(() => {
@@ -108,7 +116,7 @@ const UserPage = () => {
       .then((response) => response.text())
       .then((data) => {
         console.log("Success:", data);
-        //  window.location.reload();
+        window.location.reload();
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -134,7 +142,7 @@ const UserPage = () => {
       .then((response) => response.text())
       .then((data) => {
         console.log("Success:", data);
-        //  window.location.reload();
+        window.location.reload();
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -159,7 +167,7 @@ const UserPage = () => {
       .then((response) => response.text())
       .then((data) => {
         console.log("Success:", data);
-        // window.location.reload();
+        window.location.reload();
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -227,215 +235,267 @@ const UserPage = () => {
   };
 
   return (
-    <div>
-      <Paper elevation={10} sx={{ padding: 5, margin: 3 }}>
-        <h2 className="category-header"> CATEGORIES</h2>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "flex-end",
-          }}
+    <div className="paper">
+      <h2 className="category-header"> CATEGORIES</h2>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "flex-end",
+        }}
+      >
+        <Button
+          style={{ marginRight: 10, backgroundColor: pink[50] }}
+          onClick={() => handleAddCategory()}
         >
-          <Button
-            style={{ marginRight: 10 }}
-            onClick={() => handleAddCategory()}
+          <AddCircleOutlineSharpIcon style={{ color: pink[800] }} />
+          Add Category
+        </Button>
+      </div>
+      {categories.map((category) => (
+        <div
+          className="category-paper"
+          style={{ marginTop: 85 }}
+          key={category.id}
+        >
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "baseline",
+            }}
           >
-            <AddCircleOutlineSharpIcon style={{ color: pink[800] }} />
-            Add Category
-          </Button>
-        </div>
-        {categories.map((category) => (
-          <div style={{ marginTop: 85 }} key={category.id}>
+            <h2 className="category-text">{category.name}</h2>
             <div
               style={{
                 display: "flex",
                 justifyContent: "space-between",
-                alignItems: "baseline",
+                alignItems: "center",
               }}
             >
-              <h2 className="category-text">{category.name}</h2>
-              <div
+              <FormControlLabel
+                sx={{ backgroundColor: pink[50], borderRadius: 1 }}
+                control={
+                  <Checkbox
+                    {...label}
+                    checked={category.completed}
+                    sx={{
+                      width: 32,
+                      height: 33,
+                      fontSize: 15,
+                      color: grey[800],
+                      "&.Mui-checked": {
+                        color: green[600],
+                      },
+                    }}
+                  />
+                }
+                label="Completed"
+              />
+
+              <Button
                 style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
+                  marginRight: 10,
+                  backgroundColor: pink[50],
+                  height: 33,
+                  fontSize: 15,
+                }}
+                onClick={() => handleAddTodo(category.id)}
+              >
+                <AddCircleOutlineSharpIcon style={{ color: pink[800] }} />
+                Add Todo
+              </Button>
+
+              <Button
+                onClick={() => confirmDeleteCategory(category)}
+                style={{
+                  marginRight: 10,
+                  backgroundColor: pink[50],
+                  height: 33,
+                  fontSize: 15,
+                  maxWidth: 188,
                 }}
               >
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      {...label}
-                      checked={category.completed}
-                      sx={{
-                        color: pink[800],
-                        "&.Mui-checked": {
-                          color: pink[600],
-                        },
-                      }}
-                    />
-                  }
-                  label="Completed"
+                <DeleteOutlineIcon
+                  style={{ color: pink[800], marginRight: 10 }}
                 />
-
-                <Button
-                  style={{ marginRight: 10 }}
-                  onClick={() => handleAddTodo(category.id)}
-                >
-                  <AddCircleOutlineSharpIcon style={{ color: pink[800] }} />
-                  Add Todo
-                </Button>
-
-                <Button
-                  onClick={() => confirmDeleteCategory(category)}
-                  style={{ marginRight: 10 }}
-                >
-                  <DeleteOutlineIcon
-                    style={{ color: pink[800], marginRight: 10 }}
-                  />
-                  Delete category
-                </Button>
-              </div>
+                Delete category
+              </Button>
             </div>
+          </div>
 
-            <ul>
-              {category.todos.map((todo) => (
-                <li key={todo.id + "" + category.id}>
+          <ul>
+            {category.todos.map((todo) => (
+              <li key={todo.id + "" + category.id}>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
                   <div
+                    key={uuidv4()}
                     style={{
                       display: "flex",
                       justifyContent: "space-between",
                       alignItems: "center",
+                      width: "100%",
+                      padding: 10,
+                      margin: 5,
+                      border: "1px solid #ccc",
+                      borderRadius: 5,
+                      backgroundColor: "#f9f9f9",
                     }}
                   >
+                    <span style={{ flex: 10 }}>{todo.description}</span>
+                    <div style={{ marginRight: 30 }}>
+                      <DiscreteSlider
+                        started={todo.started}
+                        completed={todo.completed}
+                        todoId={todo.id}
+                        onSliderChange={handleSliderChange}
+                        onMouseUp={confirmSliderChange}
+                      />{" "}
+                    </div>
+                  </div>
+                  <Button
+                    key={uuidv4()}
+                    onClick={() => confirmDeleteTodo(todo)}
+                  >
+                    <DeleteOutlineIcon
+                      style={{ color: grey[400], marginRight: 10 }}
+                    />
+                  </Button>
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "flex-end",
+                    alignItems: "center",
+                  }}
+                >
+                  <Button
+                    onClick={() => toggleDetails(todo.id)}
+                    variant="contained"
+                    sx={{
+                      backgroundColor: grey[900],
+                      width: "10%",
+                      height: 25,
+                      fontSize: 13,
+                      marginRight: 10,
+                    }}
+                  >
+                    {detailsVisibility[todo.id] ? "Hide" : "Comments"}
+                  </Button>
+                </div>
+
+                {detailsVisibility[todo.id] && (
+                  <div style={{ marginTop: "16px" }}>
+                    {todo.comments.map((comment) => (
+                      <li key={comment.id}>
+                        <Card
+                          variant="outlined"
+                          sx={{
+                            width: { xs: "50%", sm: "max(400px, 90%)" },
+                            borderRadius: 7,
+                            boxShadow: 10,
+                            border: "1px solid #5116e6f9",
+                            transition: "transform 0.3s ease-in-out",
+                            "&:hover": {
+                              transform: "scale(1.03)",
+                              boxShadow: 20,
+                            },
+                            marginTop: 1,
+                            padding: 2,
+                            backgroundColor: "lightBlue",
+                          }}
+                        >
+                          <Box sx={{ textAlign: "left" }}>
+                            <div
+                              style={{
+                                display: "flex",
+                              }}
+                            >
+                              <MessageIcon />
+
+                              <Typography
+                                variant="subtitle2"
+                                color="text.secondary"
+                                sx={{ marginLeft: 2 }}
+                              >
+                                From: {comment.sender}
+                              </Typography>
+
+                              <Typography
+                                variant="subtitle2"
+                                color="text.secondary"
+                                sx={{ marginLeft: 2 }}
+                              >
+                                To: {comment.receiver}
+                              </Typography>
+                            </div>
+                            <Typography variant="body1" sx={{ mt: 2 }}>
+                              {comment.description}
+                            </Typography>
+                          </Box>
+                        </Card>
+                      </li>
+                    ))}
                     <div
-                      key={uuidv4()}
                       style={{
                         display: "flex",
-                        justifyContent: "space-between",
+                        marginTop: "10px",
+                        marginBottom: "10px",
                         alignItems: "center",
-                        width: "100%",
-                        padding: 10,
-                        margin: 5,
-                        border: "1px solid #ccc",
-                        borderRadius: 5,
-                        backgroundColor: "#f9f9f9",
                       }}
                     >
-                      <span style={{ flex: 10 }}>{todo.description}</span>
-                      <div style={{ marginRight: 30 }}>
-                        <DiscreteSlider
-                          started={todo.started}
-                          completed={todo.completed}
-                          todoId={todo.id}
-                          onSliderChange={handleSliderChange}
-                          onMouseUp={confirmSliderChange}
-                        />{" "}
-                      </div>
-                    </div>
-                    <Button
-                      key={uuidv4()}
-                      onClick={() => confirmDeleteTodo(todo)}
-                    >
-                      <DeleteOutlineIcon
-                        style={{ color: grey[400], marginRight: 10 }}
+                      <TextField
+                        id="outlined-basic-name"
+                        variant="outlined"
+                        type="text"
+                        placeholder="Receiver"
+                        onChange={(e) => setReceiver(e.target.value)}
+                        style={{
+                          width: "15%",
+                        }}
                       />
-                    </Button>
+
+                      <TextField
+                        id="outlined-basic"
+                        variant="outlined"
+                        type="text"
+                        placeholder="Type your message here!"
+                        onChange={(e) => setText(e.target.value)}
+                        style={{
+                          width: "60%",
+                          marginRight: "10%",
+                        }}
+                      />
+                      <Button
+                        style={{
+                          marginRight: 10,
+                          backgroundColor: green[50],
+                          height: 35,
+                          fontSize: 15,
+                          alignItems: "baseline",
+                        }}
+                        onClick={() => handleAddComment(todo.id)}
+                      >
+                        Send
+                      </Button>
+                    </div>
                   </div>
-                  <ul>
-                    {todo.comments.map((comment) => (
-                      <details>
-                        <summary>See comments</summary>
-                        <li key={comment.id + "" + category.id + "" + todo.id}>
-                          <Card
-                            variant="outlined"
-                            sx={{
-                              width: { xs: "100%", sm: "max(400px, 60%)" },
-                              borderRadius: 5,
-                              boxShadow: 3,
-                              border: "1px solid #E0E0E0",
-                              transition: "transform 0.3s ease-in-out",
-                              "&:hover": {
-                                transform: "scale(1.03)",
-                                boxShadow: 5,
-                              },
-                              padding: 2,
-                              backgroundColor: "lightblue",
-                            }}
-                          >
-                            <Box sx={{ mt: 2, textAlign: "left" }}>
-                              <div>
-                                <MessageIcon />
-
-                                <Typography
-                                  variant="subtitle2"
-                                  color="text.secondary"
-                                >
-                                  From: {comment.sender}
-                                </Typography>
-
-                                <Typography
-                                  variant="subtitle2"
-                                  color="text.secondary"
-                                >
-                                  To: {comment.receiver}
-                                </Typography>
-                              </div>
-                              <Typography variant="body1" sx={{ mt: 2 }}>
-                                {comment.description}
-                              </Typography>
-                            </Box>
-                          </Card>
-                          <div display="flex">
-                            <TextField
-                              id="outlined-basic-name"
-                              variant="outlined"
-                              type="text"
-                              placeholder="Receiver"
-                              onChange={(e) => setReceiver(e.target.value)}
-                            />
-
-                            <TextField
-                              id="outlined-basic"
-                              variant="outlined"
-                              type="text"
-                              placeholder="Type your message here!"
-                              onChange={(e) => setText(e.target.value)}
-                            />
-                            <Button onClick={() => handleAddComment(todo.id)}>
-                              Send
-                            </Button>
-                          </div>
-                        </li>
-                      </details>
-                    ))}
-                  </ul>
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
-        <div
-          style={{
-            display: "flex",
-          }}
-        >
-          <Button
-            type="submit"
-            variant="contained"
-            color="success"
-            sx={{
-              marginRight: 70,
-              marginLeft: 70,
-              width: 300,
-              backgroundColor: "purple",
-              color: "white",
-            }}
-            fullWidth
-          >
-            SUBMIT
-          </Button>
+                )}
+              </li>
+            ))}
+          </ul>
         </div>
-      </Paper>
+      ))}
+      <div
+        style={{
+          display: "flex",
+        }}
+      ></div>
     </div>
   );
 };

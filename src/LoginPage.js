@@ -52,66 +52,64 @@ export default function LoginPage() {
   };
 
   return (
-    <Container component="main" maxWidth="xs">
-      <Paper elevation={3} sx={{ padding: 2, margin: 2 }}>
+    // <Container component="main" maxWidth="xs">
+    <div className="paper">
+      <div elevation={3} sx={{ padding: 2, margin: 2 }} className="login-paper">
         <h2 align="center" className="login-text">
           USER LOGIN
         </h2>
 
-        <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+        <Box sx={{ display: "flex", flexDirection: "column", gap: 2, size: 2 }}>
           <form onSubmit={handleLogin}>
             <div className="form-group">
               <label>
                 <PeopleAltSharpIcon
                   aria-hidden="true"
                   size="2x"
-                  style={{ fontSize: 36, marginBottom: 10 }}
-                  sx={{ color: orange[300] }}
+                  style={{ fontSize: 30, marginBottom: 4 }}
+                  sx={{ color: orange[50] }}
                 />
               </label>
               <TextField
                 id="outlined-basic-name"
-                label="UserName"
                 variant="outlined"
                 type="text"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                placeholder="admin51"
-                InputLabelProps={{
-                  shrink: true,
-                }}
+                placeholder="UserName"
               />
             </div>
             <div className="form-group">
               <LockSharpIcon
                 aria-hidden="true"
                 size="2x"
-                style={{ fontSize: 36, marginBottom: 10 }}
-                sx={{ color: orange[300] }}
+                style={{ fontSize: 30, marginBottom: 4 }}
+                sx={{ color: orange[50] }}
               />
               <TextField
                 id="outlined-basic-password"
-                label="Password"
                 variant="outlined"
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="pass.123"
-                InputLabelProps={{
-                  shrink: true,
-                }}
+                placeholder="Password"
               />
             </div>
-
-            <Button
-              type="submit"
-              variant="contained"
-              color="success"
-              sx={{ backgroundColor: "purple", color: "white" }}
-              fullWidth
-            >
-              SUBMIT
-            </Button>
+            <div className="button">
+              <Button
+                align="center"
+                type="submit"
+                variant="contained"
+                color="success"
+                sx={{
+                  backgroundColor: "purple",
+                  color: "white",
+                  align: "center",
+                }}
+              >
+                SUBMIT
+              </Button>
+            </div>
           </form>
           {message && (
             <Typography color="textSecondary" variant="body2" align="center">
@@ -119,7 +117,8 @@ export default function LoginPage() {
             </Typography>
           )}
         </Box>
-      </Paper>
-    </Container>
+      </div>
+    </div>
+    //   </Container>
   );
 }

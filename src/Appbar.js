@@ -11,7 +11,7 @@ import { purple } from "@mui/material/colors";
 export default function Appbar() {
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" sx={{ backgroundColor: purple[500] }}>
+      <AppBar position="static" sx={{ backgroundColor: "black", opacity: 0.8 }}>
         <Toolbar>
           <IconButton
             size="large"

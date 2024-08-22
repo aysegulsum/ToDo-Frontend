@@ -1,23 +1,50 @@
-/*CategoryList.cheaderss */
+
 .category-text {
-    background-color: #ecb2ec; /* Lila rengi */
-    color: rgb(145, 18, 130); /* Yazı rengini beyaz yapalım */
-    padding: 2px; /* Metni daha güzel yerleştirmek için biraz padding ekleyelim */
-    border-radius: 4px; /* Köşeleri yuvarlamak için */
-    display: inline-block; /* Arka plan renginin sadece metnin genişliğinde olmasını sağlamak için */
-    margin-top: 1px; /* Üstten biraz boşluk bırakmak için */
+    background-color: #9a7de2;
+    color: rgba(252, 250, 252, 0.83); 
+    padding: 4px 25px; 
+    border-radius: 4px; 
+    display: inline-block; 
+    margin-top: 1px; 
 }
 .category-header{
-    background-color: #f1c8a6; /* Lila rengi */
-    color: rgb(222, 123, 36); /* Yazı rengini beyaz yapalım */
-    padding: 5px; /* Metni daha güzel yerleştirmek için biraz padding ekleyelim */
-    border-radius: 10px; /* Köşeleri yuvarlamak için */
-    display: block; /* Arka plan renginin sadece metnin genişliğinde olmasını sağlamak için */
-    margin: 30px auto; /* Üstten biraz boşluk bırakmak için */
+    background-color: #997de2f9; 
+    color: rgba(246, 243, 239, 0.781); 
+    padding: 5px; 
+    border-radius: 10px;
+    display: block; 
+    margin: 30px auto; 
     text-align: center;
 }
 
+.back{
+    background-color: #373635;
+    text-align: center;
+    padding: 10px;
+    border-radius: 10px;
+}
 
+.login-paper{
+    background-color: #96949682;
+    padding: 30px;
+    margin: auto;
+    border-radius: 10px;
+    width: max-content;   
+}
+
+.category-paper{
+    background-color: #96949682;
+    padding: 30px;
+    margin: auto;
+    border-radius: 10px;
+   
+}
+.paper{
+background-color: #919695;
+background-image: url(http://www.transparenttextures.com/patterns/brick-wall-dark.png);
+padding: 50px 160px;
+margin: auto;
+}
 .form-group{
     margin: 10px;
     display: flex;
@@ -47,11 +74,16 @@
 }
 
 .login-text {
-    background-color: #ecb2ec; /* Lila rengi */
-    color: rgb(145, 18, 130); /* Yazı rengini beyaz yapalım */
-    padding: 2px; /* Metni daha güzel yerleştirmek için biraz padding ekleyelim */
-    border-radius: 4px; /* Köşeleri yuvarlamak için */
-    display: inline-block; /* Arka plan renginin sadece metnin genişliğinde olmasını sağlamak için */
-    margin-top: 1px; /* Üstten biraz boşluk bırakmak için */
-    margin-left: 100px;
+   /* background-color: #060b0b75; */
+    color: #f7fafae2; 
+    padding: 5px; 
+    border-radius: 8px; 
+    display: inline-block;
+    margin-left: 23%;
+    font-style: italic;
+
+}
+
+.button{
+    margin-left: 35%;
 }

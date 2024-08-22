@@ -17,7 +17,13 @@ const marks = [
   },
 ];
 
-const DiscreteSlider = ({ started, completed, todoId, onSliderChange, onMouseUp }) => {
+const DiscreteSlider = ({
+  started,
+  completed,
+  todoId,
+  onSliderChange,
+  onMouseUp,
+}) => {
   const [value, setValue] = useState(0);
 
   useEffect(() => {
@@ -31,7 +37,7 @@ const DiscreteSlider = ({ started, completed, todoId, onSliderChange, onMouseUp 
   }, [started, completed]);
 
   const handleChange = (event, newValue) => {
-    if ((newValue === 50) || (value === 50 && newValue === 100)) {
+    if (newValue === 50 || (value === 50 && newValue === 100)) {
       setValue(newValue);
       onSliderChange(newValue, todoId);
     }
@@ -52,6 +58,7 @@ const DiscreteSlider = ({ started, completed, todoId, onSliderChange, onMouseUp 
         marks={marks}
         min={0}
         max={100}
+        color="black"
       />
     </Box>
   );
