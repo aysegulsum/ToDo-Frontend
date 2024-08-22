@@ -45,6 +45,13 @@ background-image: url(http://www.transparenttextures.com/patterns/brick-wall-dar
 padding: 50px 160px;
 margin: auto;
 }
+.login-p{
+    
+background-color: #919695;
+background-image: url(http://www.transparenttextures.com/patterns/brick-wall-dark.png);
+padding: 160px;
+margin: auto;
+}
 .form-group{
     margin: 10px;
     display: flex;

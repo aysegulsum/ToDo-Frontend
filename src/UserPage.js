@@ -457,6 +457,7 @@ const UserPage = () => {
                         onChange={(e) => setReceiver(e.target.value)}
                         style={{
                           width: "15%",
+                          marginLeft: "5%",
                         }}
                       />
 
@@ -468,7 +469,7 @@ const UserPage = () => {
                         onChange={(e) => setText(e.target.value)}
                         style={{
                           width: "60%",
-                          marginRight: "10%",
+                          marginRight: "2%",
                         }}
                       />
                       <Button

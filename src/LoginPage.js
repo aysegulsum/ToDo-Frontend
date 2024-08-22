@@ -53,7 +53,7 @@ export default function LoginPage() {
 
   return (
     // <Container component="main" maxWidth="xs">
-    <div className="paper">
+    <div className="login-p">
       <div elevation={3} sx={{ padding: 2, margin: 2 }} className="login-paper">
         <h2 align="center" className="login-text">
           USER LOGIN
