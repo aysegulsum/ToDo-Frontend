@@ -10,7 +10,7 @@ import {
 } from "@mui/material/";
 import { pink, grey, green, lightBlue } from "@mui/material/colors";
 import AddCircleOutlineSharpIcon from "@mui/icons-material/AddCircleOutlineSharp";
-import DiscreteSlider from "./Slider";
+import DiscreteBottomNavigation from "./Slider";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import Checkbox from "@mui/material/Checkbox";
 import { FormControlLabel } from "@mui/material";
@@ -190,6 +190,7 @@ const UserPage = () => {
   const handleSliderChange = (newValue, todoId) => {};
 
   const confirmSliderChange = (newValue, todoID) => {
+    console.log(newValue + "in confirm");
     const confirmUpdate = window.confirm(
       "Slider değeri değişti. Bilgileri güncellemek istiyor musunuz?"
     );
@@ -199,13 +200,14 @@ const UserPage = () => {
   };
 
   const updateTodoCompletion = async (newValue, todoID) => {
+    console.log(todoID);
     fetch(`http://localhost:8080/todo/updatecomplete/${todoID}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        str: newValue === 100,
+        str: newValue === 2,
       }),
     })
       .then((response) => response.text())
@@ -349,13 +351,12 @@ const UserPage = () => {
                   >
                     <span style={{ flex: 10 }}>{todo.description}</span>
                     <div style={{ marginRight: 30 }}>
-                      <DiscreteSlider
+                      <DiscreteBottomNavigation
                         started={todo.started}
                         completed={todo.completed}
                         todoId={todo.id}
-                        onSliderChange={handleSliderChange}
-                        onMouseUp={confirmSliderChange}
-                      />{" "}
+                        onSliderChange={confirmSliderChange}
+                      />
                     </div>
                   </div>
                   <Button

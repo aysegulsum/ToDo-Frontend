@@ -1,67 +1,50 @@
 import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
-import Slider from "@mui/material/Slider";
+import BottomNavigation from "@mui/material/BottomNavigation";
+import BottomNavigationAction from "@mui/material/BottomNavigationAction";
+import RestoreIcon from "@mui/icons-material/Restore";
+import HourglassEmptyIcon from "@mui/icons-material/HourglassEmpty";
+import DoneIcon from "@mui/icons-material/Done";
 
-const marks = [
-  {
-    value: 0,
-    label: "Preparation",
-  },
-  {
-    value: 50,
-    label: "Process",
-  },
-  {
-    value: 100,
-    label: "Completed",
-  },
-];
-
-const DiscreteSlider = ({
+const DiscreteBottomNavigation = ({
   started,
   completed,
   todoId,
   onSliderChange,
   onMouseUp,
 }) => {
-  const [value, setValue] = useState(0);
+  const [value, setValue] = useState("");
 
   useEffect(() => {
     if (completed) {
-      setValue(100);
+      setValue(2);
     } else if (started) {
-      setValue(50);
+      setValue(1);
     } else {
       setValue(0);
     }
   }, [started, completed]);
 
   const handleChange = (event, newValue) => {
-    if (newValue === 50 || (value === 50 && newValue === 100)) {
-      setValue(newValue);
-      onSliderChange(newValue, todoId);
-    }
+    setValue(newValue);
+    onSliderChange(newValue, todoId);
+    // onMouseUp(newValue, todoId);
   };
 
   const handleMouseUp = () => {
-    onMouseUp(value, todoId);
+    console.log("handle mouse up" + value);
+    console.log("handle mouse up");
   };
 
   return (
-    <Box sx={{ width: 150 }}>
-      <Slider
-        aria-label="Steps"
-        value={value}
-        onChange={handleChange}
-        onMouseUp={handleMouseUp}
-        step={50}
-        marks={marks}
-        min={0}
-        max={100}
-        color="black"
-      />
+    <Box sx={{ width: 300 }}>
+      <BottomNavigation value={value} onChange={handleChange} showLabels>
+        <BottomNavigationAction label="Preparation" icon={<RestoreIcon />} />
+        <BottomNavigationAction label="Process" icon={<HourglassEmptyIcon />} />
+        <BottomNavigationAction label="Completed" icon={<DoneIcon />} />
+      </BottomNavigation>
     </Box>
   );
 };
 
-export default DiscreteSlider;
+export default DiscreteBottomNavigation;
