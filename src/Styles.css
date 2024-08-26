@@ -1,15 +1,15 @@
-.loader{
-        position: fixed;   /* Sayfa boyunca sabit bir pozisyon */
-        top: 0;            /* Üstten sıfır */
-        left: 0;           /* Soldan sıfır */
-        width: 100%;       /* Genişlik: %100 */
-        height: 100vh;     /* Yükseklik: Görüntü yüksekliği kadar */
-        display: flex;     /* Flexbox ile merkezleme */
-        justify-content: center;  /* Yatay merkezleme */
-        align-items: center;      /* Dikey merkezleme */
-        background-color: rgba(0, 0, 0, 0.5);  /* Arkaplan rengi: Siyah, Opaklık: %50 */
-        z-index: 500;     /* Z-index: 1000 */
-    }
+.loader {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 10;
+}
 
 .category-text {
     background-color: #9a7de2;
@@ -93,7 +93,6 @@ margin: auto;
 }
 
 .login-text {
-   /* background-color: #060b0b75; */
     color: #f7fafae2; 
     padding: 5px; 
     border-radius: 8px; 

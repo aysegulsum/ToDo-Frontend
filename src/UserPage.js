@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from "react";
 import "./Styles.css";
 import {
-  Paper,
   Button,
   Card,
   TextField,
   Typography,
   Box,
 } from "@mui/material/";
-import { pink, grey, green, lightBlue } from "@mui/material/colors";
+import { pink, grey, green } from "@mui/material/colors";
 import AddCircleOutlineSharpIcon from "@mui/icons-material/AddCircleOutlineSharp";
 import DiscreteBottomNavigation from "./Slider";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
@@ -16,7 +15,7 @@ import Checkbox from "@mui/material/Checkbox";
 import { FormControlLabel } from "@mui/material";
 import MessageIcon from "@mui/icons-material/Message";
 import { v4 as uuidv4 } from "uuid";
-import Appbar from "./Appbar";
+
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
 const UserPage = () => {
@@ -192,11 +191,12 @@ const UserPage = () => {
   const confirmSliderChange = (newValue, todoID) => {
     console.log(newValue + "in confirm");
     const confirmUpdate = window.confirm(
-      "Slider değeri değişti. Bilgileri güncellemek istiyor musunuz?"
+      "ToDo status has changed. Do you want to save the changes??"
     );
     if (confirmUpdate) {
       updateTodoCompletion(newValue, todoID).then(console.log);
     }
+
   };
 
   const updateTodoCompletion = async (newValue, todoID) => {
@@ -240,8 +240,7 @@ const UserPage = () => {
 
   return (
     <div className="paper">
-        <Appbar />
-      <h2 className="category-header"> CATEGORIES</h2>
+      <h2 className="category-header"> TODO LIST</h2>
 
       <div
         style={{

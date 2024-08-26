@@ -6,7 +6,6 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
-import { purple } from "@mui/material/colors";
 
 export default function Appbar() {
   return (
@@ -30,7 +29,9 @@ export default function Appbar() {
           >
             React Learning Project
           </Typography>
+          { (localStorage.getItem("isAuthenticated") === "true") && (
           <Button
+
             onClick={() => {
               localStorage.clear();
               window.location.reload();
@@ -42,6 +43,7 @@ export default function Appbar() {
           >
             LOG OUT
           </Button>
+              )}
         </Toolbar>
       </AppBar>
     </Box>
