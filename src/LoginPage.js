@@ -1,5 +1,5 @@
 // src/LoginPage.js
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import { useNavigate } from "react-router-dom";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
@@ -8,12 +8,19 @@ import "font-awesome/css/font-awesome.min.css";
 import PeopleAltSharpIcon from "@mui/icons-material/PeopleAltSharp";
 import { orange } from "@mui/material/colors";
 import LockSharpIcon from "@mui/icons-material/LockSharp";
+import AppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+import IconButton from "@mui/material/IconButton";
+import MenuIcon from "@mui/icons-material/Menu";
+
+
 
 export default function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const Navigate = useNavigate();
+
   const handleLogin = async (e) => {
     e.preventDefault();
     setMessage("");
@@ -52,8 +59,44 @@ export default function LoginPage() {
   };
 
   return (
-    // <Container component="main" maxWidth="xs">
     <div className="login-p">
+<div>
+  <Box sx={{ flexGrow: 1 }}>
+    <AppBar position="static" sx={{ backgroundColor: "black", opacity: 0.8 }}>
+      <Toolbar>
+        <IconButton
+            size="large"
+            edge="start"
+            color="white"
+            aria-label="menu"
+            sx={{ mr: 2 }}
+        >
+          <MenuIcon />
+        </IconButton>
+        <Typography
+            variant="h6"
+            component="div"
+            color="white"
+            sx={{ flexGrow: 1 }}
+        >
+          React Learning Project
+        </Typography>
+        <Button
+            onClick={() => {
+              localStorage.clear();
+              window.location.reload();
+            }}
+            style={{
+              backgroundColor: "grey",
+              color: "white",
+            }}
+        >
+          LOG OUT
+        </Button>
+      </Toolbar>
+    </AppBar>
+  </Box>
+</div>
       <div elevation={3} sx={{ padding: 2, margin: 2 }} className="login-paper">
         <h2 align="center" className="login-text">
           USER LOGIN

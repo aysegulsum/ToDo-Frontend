@@ -38,7 +38,8 @@ const DiscreteBottomNavigation = ({
 
   return (
     <Box sx={{ width: 300 }}>
-      <BottomNavigation value={value} onChange={handleChange} showLabels>
+      <BottomNavigation value={value} onChange={handleChange} showLabels
+                        style={{ backgroundColor: "lightyellow", borderRadius: "15px" }}>
         <BottomNavigationAction label="Preparation" icon={<RestoreIcon />} />
         <BottomNavigationAction label="Process" icon={<HourglassEmptyIcon />} />
         <BottomNavigationAction label="Completed" icon={<DoneIcon />} />

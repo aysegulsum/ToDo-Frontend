@@ -16,7 +16,7 @@ import Checkbox from "@mui/material/Checkbox";
 import { FormControlLabel } from "@mui/material";
 import MessageIcon from "@mui/icons-material/Message";
 import { v4 as uuidv4 } from "uuid";
-
+import Appbar from "./Appbar";
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
 const UserPage = () => {
@@ -234,11 +234,15 @@ const UserPage = () => {
       .catch((error) => {
         console.error("Error:", error);
       });
+
+    window.location.reload();
   };
 
   return (
     <div className="paper">
+        <Appbar />
       <h2 className="category-header"> CATEGORIES</h2>
+
       <div
         style={{
           display: "flex",
@@ -500,6 +504,6 @@ const UserPage = () => {
       ></div>
     </div>
   );
-};
+}
 
 export default UserPage;

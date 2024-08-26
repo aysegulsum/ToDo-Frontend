@@ -5,9 +5,18 @@ import Appbar from "./Appbar";
 import UserPage from "./UserPage";
 import LoginPage from "./LoginPage";
 import ProtectedRoute from "./ProtectedRoute";
+import { PacmanLoader } from 'react-spinners';
 
 function App() {
   const [message, setMessage] = useState("");
+  const[loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+    }, 1780)
+  }, []);
 
   useEffect(() => {
     fetch("http://localhost:8080/welcome")
@@ -17,15 +26,27 @@ function App() {
   }, []);
 
   return (
+
     <BrowserRouter>
-      <Appbar />
-      <Routes>
-        <Route path="/" element={<LoginPage />} />
-        <Route element={<ProtectedRoute />}>
-          <Route path="/userpage" element={<UserPage />} />
-        </Route>
-      </Routes>
-      <p align="center">{message}</p>
+        { loading ?(
+            <div className="loader">
+                <PacmanLoader
+                    color="#fcf892"
+                    loading
+                    size={32}
+                    speedMultiplier={2}
+                /></div>      ):( <>
+            <Appbar />
+            <Routes>
+                <Route path="/" element={<LoginPage />} />
+                <Route element={<ProtectedRoute />}>
+                    <Route path="/userpage" element={<UserPage />} />
+                </Route>
+            </Routes>
+            <p align="center">{message}</p>
+        </>
+)
+        }
     </BrowserRouter>
   );
 }
