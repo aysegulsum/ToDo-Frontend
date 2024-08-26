@@ -17,7 +17,7 @@ function App() {
     setTimeout(() => {
       setLoading(false);
     }, 1780);
-  }, []);
+  }, [isAuthenticated]);
 
   useEffect(() => {
     fetch("http://localhost:8080/welcome")

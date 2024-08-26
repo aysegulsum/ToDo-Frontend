@@ -186,7 +186,6 @@ const UserPage = () => {
     handleDeleteCategory(category.id);
   };
 
-  const handleSliderChange = (newValue, todoId) => {};
 
   const confirmSliderChange = (newValue, todoID) => {
     console.log(newValue + "in confirm");
@@ -278,7 +277,7 @@ const UserPage = () => {
               }}
             >
               <FormControlLabel
-                sx={{ backgroundColor: pink[50], borderRadius: 1 }}
+                sx={{ backgroundColor: pink[50], borderRadius: 1, paddingInlineEnd:1}}
                 control={
                   <Checkbox
                     {...label}
@@ -301,8 +300,8 @@ const UserPage = () => {
                 style={{
                   marginRight: 10,
                   backgroundColor: pink[50],
-                  height: 33,
-                  fontSize: 15,
+                  height: 32,
+                  fontSize: 14,
                 }}
                 onClick={() => handleAddTodo(category.id)}
               >
@@ -315,13 +314,13 @@ const UserPage = () => {
                 style={{
                   marginRight: 10,
                   backgroundColor: pink[50],
-                  height: 33,
-                  fontSize: 15,
+                  height: 32,
+                  fontSize: 14,
                   maxWidth: 188,
                 }}
               >
                 <DeleteOutlineIcon
-                  style={{ color: pink[800], marginRight: 10 }}
+                  style={{ color: pink[800], marginRight: 1 }}
                 />
                 Delete category
               </Button>

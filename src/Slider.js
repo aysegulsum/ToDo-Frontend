@@ -31,10 +31,6 @@ const DiscreteBottomNavigation = ({
     // onMouseUp(newValue, todoId);
   };
 
-  const handleMouseUp = () => {
-    console.log("handle mouse up" + value);
-    console.log("handle mouse up");
-  };
 
   return (
     <Box sx={{ width: 300 }}>
