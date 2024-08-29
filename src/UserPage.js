@@ -7,11 +7,13 @@ import AddCircleOutlineSharpIcon from '@mui/icons-material/AddCircleOutlineSharp
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import Checkbox from "@mui/material/Checkbox";
 import { FormControlLabel } from "@mui/material";
-import VirtualizedList from "./list"; // Import the VirtualizedList component
+import VirtualizedList from "./list";
 import MessageIcon from "@mui/icons-material/Message";
+import SendIcon from '@mui/icons-material/Send';
 import DiscreteBottomNavigation from "./Slider";
 import { v4 as uuidv4 } from "uuid";
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
+
 
 
 const UserPage = () => {
@@ -22,14 +24,19 @@ const UserPage = () => {
     const [text, setText] = useState("");
     const [receiver, setReceiver] = useState("");
 
+    const [newCategoryName, setNewCategoryName] = useState("");
+    const [showTextField, setShowTextField] = useState(false);
+    const [newTodoName,  setNewTodoName] = useState("");
+    const [showTodoTextField, setShowTodoTextField] = useState(false);
+
     const toggleDetails = (todoId) => {
         setDetailsVisibility((prev) => ({
             ...prev,
             [todoId]: !prev[todoId],
         }));
     };
+
     useEffect(() => {
-      //  const intervalId = setInterval(() => {
             fetch("http://localhost:8080/category/getcategories")
                 .then((response) => response.json())
                 .then((data) => {
@@ -39,9 +46,7 @@ const UserPage = () => {
                 .catch((error) => {
                     console.error("Error:", error);
                 });
-     //   }, 1000);
 
-      //  return () => clearInterval(intervalId);
     }, []);
 
     const handleAddComment = (id) => {
@@ -118,9 +123,9 @@ const UserPage = () => {
             });
     };
 
-    const handleAddTodo = (id) => {
-        const newTodo = prompt("Enter the description for the new todo:");
-        if (!newTodo) {
+    const handleAddTodo = (id, newTodoName) => {
+       // const newTodo = prompt("Enter the description for the new todo:");
+        if (!newTodoName) {
             return;
         }
 
@@ -130,22 +135,22 @@ const UserPage = () => {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                description: newTodo,
+                description: newTodoName,
                 categoryId: id,
             }),
         })
             .then((response) => response.text())
             .then((data) => {
                 console.log("Success:", data);
+
             })
             .catch((error) => {
                 console.error("Error:", error);
             });
     };
 
-    const handleAddCategory = () => {
-        const newName = prompt("Enter the name of new category:");
-        if (!newName) {
+    const handleAddCategory = (newCategoryName) => {
+        if (!newCategoryName) {
             return;
         }
 
@@ -155,12 +160,21 @@ const UserPage = () => {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                name: newName,
+                name: newCategoryName,
             }),
         })
             .then((response) => response.text())
             .then((data) => {
                 console.log("Success:", data);
+                fetch("http://localhost:8080/category/getcategories")
+                    .then((response) => response.json())
+                    .then((data) => {
+                        setCategories(data);
+                        console.log(data);
+                    })
+                    .catch((error) => {
+                        console.error("Error:", error);
+                    });
             })
             .catch((error) => {
                 console.error("Error:", error);
@@ -181,6 +195,7 @@ const UserPage = () => {
     };
 
     const updateTodoCompletion = async (newValue, todoID) => {
+        console.log("New value: ", newValue);
         fetch(`http://localhost:8080/todo/updatecomplete/${todoID}`, {
             method: "PUT",
             headers: {
@@ -204,7 +219,7 @@ const UserPage = () => {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                str: newValue !== 0,
+                str: newValue === 1,
             }),
         })
             .then((response) => response.text())
@@ -220,23 +235,39 @@ const UserPage = () => {
         <div className={"paper"} style={{ display: "flex" }}>
             <div style={{display:"flex" ,
                 flexDirection: "column",
-                justifyContent: "space-between",
+                justifyContent: "space-evenly",
                 alignItems: "center"}}>
                 <VirtualizedList categories={categories}
-                                 onSelectCategory={setSelectedCategory}/> {/* Pass categories and onSelectCategory as props */}
+                                 onSelectCategory={setSelectedCategory}/> {}
                 <div
                     style={{
                         display: "flex",
 
                     }}
                 >
-                    <Button
-                        style={{marginRight: 10, backgroundColor: pink[50]}}
-                        onClick={() => handleAddCategory()}
-                    >
-                        <AddCircleOutlineSharpIcon style={{color: pink[800]}}/>
-                        Add Category
-                    </Button>
+                    {showTextField ? (
+                        <div>
+                            <input
+                                style={
+                                    {
+                                        padding: 10,
+                                        borderRadius: 5,
+                                        border: "1px solid #ccc",
+                                        marginRight: 10,
+                                        width: 200,
+                                    }
+                                }
+                                type="text"
+                                value={newCategoryName}
+                                onChange={(e) => setNewCategoryName(e.target.value)}
+                                placeholder="Enter category name"
+                            />
+                            <Button style={{marginRight: 10, backgroundColor: pink[50]}} onClick={() => { setShowTextField(false); handleAddCategory(newCategoryName); }}>Add</Button>
+                        </div>
+                    ) : (
+                        <Button  startIcon={ <AddCircleOutlineSharpIcon style={{color: pink[800]}}/>} style={{marginRight: 10, backgroundColor: pink[50]}} onClick={() => setShowTextField(true)}>Add Category</Button>
+                    )}
+
                 </div>
             </div>
             <div style={{flex: 3, width: 400}}>
@@ -274,33 +305,55 @@ const UserPage = () => {
                                         }
                                         label="Completed"
                                     />
+                                    {showTodoTextField ? (
+                                        <div>
+                                            <input
+                                                style={
+                                                    {
+                                                        padding: 10,
+                                                        borderRadius: 5,
+                                                        border: "1px solid #ccc",
+                                                        marginRight: 10,
+                                                        width: 200,
+                                                    }
+                                                }
+                                                type="text"
+                                                value={newTodoName}
+                                                onChange={(e) => setNewTodoName(e.target.value)}
+                                                placeholder="Enter todo name"
+                                            />
+                                            <Button style={{marginRight: 10, backgroundColor: pink[50]}} onClick={() => { setShowTodoTextField(false); handleAddTodo(selectedCategory.id, newTodoName); }}>Add</Button>
+                                        </div>
+                                    ) : (
+                                        <Button
+                                            style={{
+                                                marginRight: 10,
+                                                backgroundColor: pink[50],
+                                                height: 33,
+                                                fontSize: 14,
+                                            }}
+                                            onClick={() => setShowTodoTextField(true)} //handleAddTodo(selectedCategory.id)
+                                            startIcon={<AddCircleOutlineSharpIcon style={{color: pink[800]}}/>}
+                                        >
 
-                                    <Button
-                                        style={{
-                                            marginRight: 10,
-                                            backgroundColor: pink[50],
-                                            height: 33,
-                                            fontSize: 15,
-                                        }}
-                                        onClick={() => handleAddTodo(selectedCategory.id)}
-                                    >
-                                        <AddCircleOutlineSharpIcon style={{color: pink[800], paddingInlineEnd:7}}/>
-                                        Add Todo
-                                    </Button>
+                                            Add Todo
+                                        </Button>
+                                    )}
+
 
                                     <Button
                                         onClick={() => confirmDeleteCategory(selectedCategory)}
                                         style={{
-                                            marginRight: 10,
                                             backgroundColor: pink[50],
                                             height: 33,
-                                            fontSize: 15,
+                                            fontSize: 14,
                                             maxWidth: 188,
                                         }}
+                                        startIcon={ <DeleteOutlineIcon
+                                            style={{color: pink[800]}}
+                                        />}
                                     >
-                                        <DeleteOutlineIcon
-                                            style={{color: pink[800], marginRight: 10}}
-                                        />
+
                                         Delete category
                                     </Button>
                                 </div>
@@ -447,14 +500,14 @@ const UserPage = () => {
                                                         }}
                                                     />
                                                     <Button
+                                                        endIcon={<SendIcon />}
                                                         style={{
-                                                            marginRight: 10,
                                                             backgroundColor: green[50],
                                                             height: 35,
-                                                            fontSize: 15,
-                                                            alignItems: "baseline",
+                                                            fontSize: 14,
                                                         }}
-                                                        onClick={() => handleAddComment(todo.id)}
+                                                        onClick={() => handleAddComment(todo.id)
+                                                    }
                                                     >
                                                         Send
                                                     </Button>
