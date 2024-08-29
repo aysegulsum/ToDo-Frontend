@@ -20,6 +20,8 @@ const UserPage = () => {
     const [categories, setCategories] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState(null); // State for selected category
     const [detailsVisibility, setDetailsVisibility] = useState({});
+    const [todoList, setTodo] = useState([]);
+    const [comment, setComment] = useState([]);
 
     const [text, setText] = useState("");
     const [receiver, setReceiver] = useState("");
@@ -28,6 +30,7 @@ const UserPage = () => {
     const [showTextField, setShowTextField] = useState(false);
     const [newTodoName,  setNewTodoName] = useState("");
     const [showTodoTextField, setShowTodoTextField] = useState(false);
+    const [refreshCategories, setRefreshCategories] = useState(false);
 
     const toggleDetails = (todoId) => {
         setDetailsVisibility((prev) => ({
@@ -35,6 +38,8 @@ const UserPage = () => {
             [todoId]: !prev[todoId],
         }));
     };
+
+
 
     useEffect(() => {
             fetch("http://localhost:8080/category/getcategories")
@@ -47,8 +52,35 @@ const UserPage = () => {
                     console.error("Error:", error);
                 });
 
+    }, [refreshCategories]);
+
+
+    useEffect(() => {
+        fetch("http://localhost:8080/todo/getall")
+            .then((response) => response.json())
+            .then((data) => {
+                setTodo(data);
+                console.log(data);
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+            });
+
     }, []);
 
+
+    useEffect(() => {
+        fetch("http://localhost:8080/comment/getall")
+            .then((response) => response.json())
+            .then((data) => {
+                setComment(data);
+                console.log(data);
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+            });
+
+    }, []);
     const handleAddComment = (id) => {
         fetch(`http://localhost:8080/comment/add`, {
             method: "POST",
@@ -85,6 +117,43 @@ const UserPage = () => {
                     );
                 } else {
                     console.error("Failed to delete todo");
+                }
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+            });
+    };
+
+    const confirmDeleteComment = (comment) => {
+        const message =  "Do you want to delete this comment?";
+
+        const confirmDelete = window.confirm(message);
+        if (!confirmDelete) {
+            return;
+        }
+
+        handleDeleteComment(comment.id);
+    };
+
+    const handleDeleteComment = (commentId) => {
+        fetch(`http://localhost:8080/comment/delete/${commentId}`, {
+            method: "DELETE",
+        })
+            .then((response) => {
+                if (response.ok) {
+                    setCategories((prevCategories) =>
+                        prevCategories.map((category) => ({
+                            ...category,
+                            todos: category.todos.map((todo) => ({
+                                ...todo,
+                                comments: todo.comments.filter(
+                                    (comment) => comment.id !== commentId
+                                ),
+                            })),
+                        }))
+                    );
+                } else {
+                    console.error("Failed to delete comment");
                 }
             })
             .catch((error) => {
@@ -142,6 +211,17 @@ const UserPage = () => {
             .then((response) => response.text())
             .then((data) => {
                 console.log("Success:", data);
+                fetch("http://localhost:8080/category/getcategories")
+                    .then((response) => response.json())
+                    .then((data) => {
+                        setCategories(data);
+                        console.log(data);
+                    })
+                    .catch((error) => {
+                        console.error("Error:", error);
+                    });
+                setRefreshCategories(true);
+                console.log(refreshCategories);
 
             })
             .catch((error) => {
@@ -271,7 +351,7 @@ const UserPage = () => {
                 </div>
             </div>
             <div style={{flex: 3, width: 400}}>
-                <Paper className={"paper"} elevation={3} style={{padding: 20, margin: 20, width: "100%"}}>
+                <Paper className={"paper"} elevation={3} style={{padding: 20, margin: 20, width: "100%", minHeight: 600}}>
 
                     <h2 className="category-header"> ToDo List</h2>
 
@@ -419,14 +499,15 @@ const UserPage = () => {
                                         {detailsVisibility[todo.id] && (
                                             <div style={{ marginTop: "16px" }}>
                                                 {todo.comments.map((comment) => (
-                                                    <li key={comment.id}>
+                                                    <li key={comment.id} style={{display: "flex"}}>
                                                         <Card
                                                             variant="outlined"
                                                             sx={{
-                                                                width: { xs: "50%", sm: "max(400px, 90%)" },
-                                                                borderRadius: 7,
+                                                                marginLeft:5,
+                                                                borderRadius: 5,
+                                                                width: { xs: "50%", sm: "max(400px, 80%)" },
+                                                                height: "auto",
                                                                 boxShadow: 10,
-                                                                border: "1px solid #5116e6f9",
                                                                 transition: "transform 0.3s ease-in-out",
                                                                 "&:hover": {
                                                                     transform: "scale(1.03)",
@@ -434,7 +515,7 @@ const UserPage = () => {
                                                                 },
                                                                 marginTop: 1,
                                                                 padding: 2,
-                                                                backgroundColor: "lightBlue",
+                                                                backgroundColor: "#00F4F437",
                                                             }}
                                                         >
                                                             <Box sx={{ textAlign: "left" }}>
@@ -465,7 +546,11 @@ const UserPage = () => {
                                                                     {comment.description}
                                                                 </Typography>
                                                             </Box>
+
                                                         </Card>
+                                                        <Button onClick={() => confirmDeleteComment(comment)}>
+                                                            <DeleteOutlineIcon style={{color: "black", marginRight: 10}}/>
+                                                        </Button>
                                                     </li>
                                                 ))}
                                                 <div
