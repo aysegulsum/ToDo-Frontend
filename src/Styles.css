@@ -51,6 +51,11 @@
     border-radius: 10px;
 
 }
+.welcome{
+    background-color: #919695;
+    background-image: url(http://www.transparenttextures.com/patterns/brick-wall-dark.png);
+    padding: 8px;
+}
 .paper{
 background-color: #919695;
 background-image: url(http://www.transparenttextures.com/patterns/brick-wall-dark.png);

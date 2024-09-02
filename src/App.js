@@ -10,7 +10,7 @@ import { PacmanLoader } from 'react-spinners';
 function App() {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
-  const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem("token"));
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
     setLoading(true);
@@ -33,18 +33,19 @@ function App() {
           <PacmanLoader color="#fcf892" loading size={32} speedMultiplier={2} />
         </div>
       ) : (
-        <>
-          <Appbar />
-          <Routes>
-            <Route path="/" element={<LoginPage setIsAuthenticated={setIsAuthenticated} />} />
-            <Route element={<ProtectedRoute />}>
-              <Route path="/userpage" element={<UserPage />} />
-            </Route>
-          </Routes>
-          <p align="center">{message} </p>
-        </>
+          <>
+            <Appbar/>
+            <Routes>
+              <Route path="/" element={<LoginPage setIsAuthenticated={setIsAuthenticated}/>}/>
+              <Route element={<ProtectedRoute/>}>
+                <Route path="/userpage" element={<UserPage/>}/>
+              </Route>
+            </Routes>
+            <div className={"welcome"} align="center">{message} </div>
+          </>
       )}
     </BrowserRouter>
   );
 }
+
 export default App;

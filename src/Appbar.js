@@ -6,8 +6,20 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
+import {useState} from "react";
+import {useNavigate} from "react-router-dom";
 
 export default function Appbar() {
+
+  const [isButtonVisible, setButtonVisible] = useState(true);
+  const Navigate = useNavigate();
+
+
+  const toggleButtonVisibility = () => {
+    setButtonVisible(false);
+  };
+
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static" sx={{ backgroundColor: "black", opacity: 0.8 }}>
@@ -29,12 +41,13 @@ export default function Appbar() {
           >
             React Learning Project
           </Typography>
-          { (localStorage.getItem("isAuthenticated") === "true") && (
+          { (localStorage.getItem("isAuthenticated") === "true") && isButtonVisible && (
           <Button
 
             onClick={() => {
               localStorage.clear();
-              window.location.reload();
+              toggleButtonVisibility();
+              Navigate("/");
             }}
             style={{
               backgroundColor: "grey",

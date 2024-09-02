@@ -52,7 +52,7 @@ export default function LoginPage() {
       localStorage.setItem("isAuthenticated", "false");
     }
 
-    window.location.reload();
+    window.location.reload(); //to show the page loader when the user is authenticated
   };
 
   return (
