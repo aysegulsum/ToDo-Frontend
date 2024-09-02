@@ -30,7 +30,7 @@ const UserPage = () => {
     const [showTextField, setShowTextField] = useState(false);
     const [newTodoName,  setNewTodoName] = useState("");
     const [showTodoTextField, setShowTodoTextField] = useState(false);
-    const [refreshCategories, setRefreshCategories] = useState(false);
+
 
     const toggleDetails = (todoId) => {
         setDetailsVisibility((prev) => ({
@@ -42,19 +42,23 @@ const UserPage = () => {
 
 
     useEffect(() => {
-            fetch("http://localhost:8080/category/getcategories")
-                .then((response) => response.json())
-                .then((data) => {
-                    setCategories(data);
-                    console.log(data);
-                })
-                .catch((error) => {
-                    console.error("Error:", error);
-                });
+        //const interval = setInterval(() => {
+            getCategories();
+       // }, 1000);
+        //return () => clearInterval(interval);
+    }, []);
 
-    }, [refreshCategories]);
-
-
+const getCategories = () => {
+    fetch("http://localhost:8080/category/getcategories")
+        .then((response) => response.json())
+        .then((data) => {
+            setCategories(data);
+            console.log(data);
+        })
+        .catch((error) => {
+            console.error("Error:", error);
+        });
+}
     useEffect(() => {
         fetch("http://localhost:8080/todo/getall")
             .then((response) => response.json())
@@ -187,6 +191,7 @@ const UserPage = () => {
                     console.error("Failed to delete category");
                 }
             })
+
             .catch((error) => {
                 console.error("Error:", error);
             });
@@ -211,18 +216,7 @@ const UserPage = () => {
             .then((response) => response.text())
             .then((data) => {
                 console.log("Success:", data);
-                fetch("http://localhost:8080/category/getcategories")
-                    .then((response) => response.json())
-                    .then((data) => {
-                        setCategories(data);
-                        console.log(data);
-                    })
-                    .catch((error) => {
-                        console.error("Error:", error);
-                    });
-                setRefreshCategories(true);
-                console.log(refreshCategories);
-
+                getCategories();
             })
             .catch((error) => {
                 console.error("Error:", error);
@@ -246,15 +240,8 @@ const UserPage = () => {
             .then((response) => response.text())
             .then((data) => {
                 console.log("Success:", data);
-                fetch("http://localhost:8080/category/getcategories")
-                    .then((response) => response.json())
-                    .then((data) => {
-                        setCategories(data);
-                        console.log(data);
-                    })
-                    .catch((error) => {
-                        console.error("Error:", error);
-                    });
+                getCategories();
+
             })
             .catch((error) => {
                 console.error("Error:", error);
@@ -316,7 +303,8 @@ const UserPage = () => {
             <div style={{display:"flex" ,
                 flexDirection: "column",
                 justifyContent: "space-evenly",
-                alignItems: "center"}}>
+                alignItems: "center",
+            height:100}}>
                 <VirtualizedList categories={categories}
                                  onSelectCategory={setSelectedCategory}/> {}
                 <div
