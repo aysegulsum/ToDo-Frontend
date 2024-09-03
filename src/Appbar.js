@@ -9,12 +9,13 @@ import MenuIcon from "@mui/icons-material/Menu";
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
 
+// Appbar component
 export default function Appbar() {
 
   const [isButtonVisible, setButtonVisible] = useState(true);
   const Navigate = useNavigate();
 
-
+// Function to toggle log out button visibility
   const toggleButtonVisibility = () => {
     setButtonVisible(false);
   };

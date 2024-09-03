@@ -1,90 +1,111 @@
 // src/UserPage.js
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import "./Styles.css";
-import { Paper, Button, TextField,Card,Box, Typography } from "@mui/material/";
+import {Paper, Button, TextField, Card, Box, Typography} from "@mui/material/";
 import {pink, grey, green} from "@mui/material/colors";
 import AddCircleOutlineSharpIcon from '@mui/icons-material/AddCircleOutlineSharp';
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import Checkbox from "@mui/material/Checkbox";
-import { FormControlLabel } from "@mui/material";
+import {FormControlLabel} from "@mui/material";
 import VirtualizedList from "./list";
 import MessageIcon from "@mui/icons-material/Message";
 import SendIcon from '@mui/icons-material/Send';
 import DiscreteBottomNavigation from "./Slider";
-import { v4 as uuidv4 } from "uuid";
-const label = { inputProps: { "aria-label": "Checkbox demo" } };
+import {v4 as uuidv4} from "uuid";
 
+const label = {inputProps: {"aria-label": "Checkbox demo"}};
 
 
 const UserPage = () => {
-    const [categories, setCategories] = useState([]);
-    const [selectedCategory, setSelectedCategory] = useState(null); // State for selected category
-    const [detailsVisibility, setDetailsVisibility] = useState({});
-    const [todoList, setTodo] = useState([]);
-    const [comment, setComment] = useState([]);
+    const [categories, setCategories] = useState([]); //array of category objects
+    const [selectedCategory, setSelectedCategory] = useState(null);//selected category object
+    const [detailsVisibility, setDetailsVisibility] = useState({});//using to store visibility of comments
+    const [text, setText] = useState("");//storing the text of the comment
+    const [receiver, setReceiver] = useState("");//storing the receiver of the comment
+    const [newCategoryName, setNewCategoryName] = useState("");//storing the name of the new category if added
+    const [showTextField, setShowTextField] = useState(false);//using to show the text field for adding category
+    const [newTodoName, setNewTodoName] = useState("");//storing the name of the new todo if added
+    const [showTodoTextField, setShowTodoTextField] = useState(false);//using to show the text field for adding todo
 
-    const [text, setText] = useState("");
-    const [receiver, setReceiver] = useState("");
+//fetching the categories from the server
+    useEffect(() => {
+        getCategories();
+    }, []);
 
-    const [newCategoryName, setNewCategoryName] = useState("");
-    const [showTextField, setShowTextField] = useState(false);
-    const [newTodoName,  setNewTodoName] = useState("");
-    const [showTodoTextField, setShowTodoTextField] = useState(false);
+//function to get the categories from the server
+    const getCategories = () => {
+        fetch("http://localhost:8080/category/getcategories")
+            .then((response) => response.json())
+            .then((data) => {
+                setCategories(data);
+                console.log(data);
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+            });
+    }
 
+//function to add a category
+    const handleAddCategory = (newCategoryName) => {
+        if (!newCategoryName) {
+            return;
+        }
 
-    const toggleDetails = (todoId) => {
-        setDetailsVisibility((prev) => ({
-            ...prev,
-            [todoId]: !prev[todoId],
-        }));
+        fetch(`http://localhost:8080/category/add`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                name: newCategoryName,
+            }),
+        })
+            .then((response) => response.text())
+            .then((data) => {
+                console.log("Success:", data);
+                getCategories();
+
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+            });
     };
 
+//function to confirm if a category should be deleted
+    const confirmDeleteCategory = (category) => {
+        const message = category.completed
+            ? "Do you want to delete this completed category?"
+            : "This category is not completed. Do you still want to delete it?";
 
+        const confirmDelete = window.confirm(message);
+        if (!confirmDelete) {
+            return;
+        }
 
-    useEffect(() => {
-        //const interval = setInterval(() => {
-            getCategories();
-       // }, 1000);
-        //return () => clearInterval(interval);
-    }, []);
+        handleDeleteCategory(category.id);
+    };
 
-const getCategories = () => {
-    fetch("http://localhost:8080/category/getcategories")
-        .then((response) => response.json())
-        .then((data) => {
-            setCategories(data);
-            console.log(data);
+//function to delete a category
+    const handleDeleteCategory = (categoryId) => {
+        fetch(`http://localhost:8080/category/delete/${categoryId}`, {
+            method: "DELETE",
         })
-        .catch((error) => {
-            console.error("Error:", error);
-        });
-}
-    useEffect(() => {
-        fetch("http://localhost:8080/todo/getall")
-            .then((response) => response.json())
-            .then((data) => {
-                setTodo(data);
-                console.log(data);
+            .then((response) => {
+                if (response.ok) {
+                    setCategories((prevCategories) =>
+                        prevCategories.filter((category) => category.id !== categoryId)
+                    );
+                } else {
+                    console.error("Failed to delete category");
+                }
             })
+
             .catch((error) => {
                 console.error("Error:", error);
             });
+    };
 
-    }, []);
-
-
-    useEffect(() => {
-        fetch("http://localhost:8080/comment/getall")
-            .then((response) => response.json())
-            .then((data) => {
-                setComment(data);
-                console.log(data);
-            })
-            .catch((error) => {
-                console.error("Error:", error);
-            });
-
-    }, []);
+//function to add a comment
     const handleAddComment = (id) => {
         fetch(`http://localhost:8080/comment/add`, {
             method: "POST",
@@ -107,29 +128,10 @@ const getCategories = () => {
                 console.error("Error:", error);
             });
     };
-    const handleDeleteTodo = (todoId) => {
-        fetch(`http://localhost:8080/todo/delete/${todoId}`, {
-            method: "DELETE",
-        })
-            .then((response) => {
-                if (response.ok) {
-                    setCategories((prevCategories) =>
-                        prevCategories.map((category) => ({
-                            ...category,
-                            todos: category.todos.filter((todo) => todo.id !== todoId),
-                        }))
-                    );
-                } else {
-                    console.error("Failed to delete todo");
-                }
-            })
-            .catch((error) => {
-                console.error("Error:", error);
-            });
-    };
 
+//function to confirm if a comment should be deleted
     const confirmDeleteComment = (comment) => {
-        const message =  "Do you want to delete this comment?";
+        const message = "Do you want to delete this comment?";
 
         const confirmDelete = window.confirm(message);
         if (!confirmDelete) {
@@ -139,6 +141,7 @@ const getCategories = () => {
         handleDeleteComment(comment.id);
     };
 
+//function to delete a comment
     const handleDeleteComment = (commentId) => {
         fetch(`http://localhost:8080/comment/delete/${commentId}`, {
             method: "DELETE",
@@ -165,40 +168,9 @@ const getCategories = () => {
             });
     };
 
-    const confirmDeleteTodo = (todo) => {
-        const message = todo.completed
-            ? "Do you want to delete this completed todo?"
-            : "This todo is not completed. Do you still want to delete it?";
-
-        const confirmDelete = window.confirm(message);
-        if (!confirmDelete) {
-            return;
-        }
-
-        handleDeleteTodo(todo.id);
-    };
-
-    const handleDeleteCategory = (categoryId) => {
-        fetch(`http://localhost:8080/category/delete/${categoryId}`, {
-            method: "DELETE",
-        })
-            .then((response) => {
-                if (response.ok) {
-                    setCategories((prevCategories) =>
-                        prevCategories.filter((category) => category.id !== categoryId)
-                    );
-                } else {
-                    console.error("Failed to delete category");
-                }
-            })
-
-            .catch((error) => {
-                console.error("Error:", error);
-            });
-    };
-
+    //function to add a todo
     const handleAddTodo = (id, newTodoName) => {
-       // const newTodo = prompt("Enter the description for the new todo:");
+        // const newTodo = prompt("Enter the description for the new todo:");
         if (!newTodoName) {
             return;
         }
@@ -223,44 +195,43 @@ const getCategories = () => {
             });
     };
 
-    const handleAddCategory = (newCategoryName) => {
-        if (!newCategoryName) {
-            return;
-        }
-
-        fetch(`http://localhost:8080/category/add`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                name: newCategoryName,
-            }),
-        })
-            .then((response) => response.text())
-            .then((data) => {
-                console.log("Success:", data);
-                getCategories();
-
-            })
-            .catch((error) => {
-                console.error("Error:", error);
-            });
-    };
-
-    const confirmDeleteCategory = (category) => {
-        const message = category.completed
-            ? "Do you want to delete this completed category?"
-            : "This category is not completed. Do you still want to delete it?";
+//function to confirm if a todo should be deleted
+    const confirmDeleteTodo = (todo) => {
+        const message = todo.completed
+            ? "Do you want to delete this completed todo?"
+            : "This todo is not completed. Do you still want to delete it?";
 
         const confirmDelete = window.confirm(message);
         if (!confirmDelete) {
             return;
         }
 
-        handleDeleteCategory(category.id);
+        handleDeleteTodo(todo.id);
     };
 
+//function to delete a todo
+    const handleDeleteTodo = (todoId) => {
+        fetch(`http://localhost:8080/todo/delete/${todoId}`, {
+            method: "DELETE",
+        })
+            .then((response) => {
+                if (response.ok) {
+                    setCategories((prevCategories) =>
+                        prevCategories.map((category) => ({
+                            ...category,
+                            todos: category.todos.filter((todo) => todo.id !== todoId),
+                        }))
+                    );
+                } else {
+                    console.error("Failed to delete todo");
+                }
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+            });
+    };
+
+//function to update the completion status of a todo
     const updateTodoCompletion = async (newValue, todoID) => {
         console.log("New value: ", newValue);
         fetch(`http://localhost:8080/todo/updatecomplete/${todoID}`, {
@@ -298,13 +269,24 @@ const getCategories = () => {
             });
     };
 
+    //function to toggle the visibility of comments
+    const toggleDetails = (todoId) => {
+        setDetailsVisibility((prev) => ({
+            ...prev,
+            [todoId]: !prev[todoId],
+        }));
+    };
+
     return (
-        <div className={"paper"} style={{ display: "flex" }}>
-            <div style={{display:"flex" ,
+        <div className={"paper"} style={{display: "flex"}}>
+            <div style={{
+                display: "flex",
                 flexDirection: "column",
                 justifyContent: "space-evenly",
                 alignItems: "center",
-            height:100}}>
+                height: 100
+            }}>
+                {/*special view of list of categories*/}
                 <VirtualizedList categories={categories}
                                  onSelectCategory={setSelectedCategory}/> {}
                 <div
@@ -313,6 +295,7 @@ const getCategories = () => {
 
                     }}
                 >
+                    {/*hidden category adding part*/}
                     {showTextField ? (
                         <div>
                             <input
@@ -330,20 +313,27 @@ const getCategories = () => {
                                 onChange={(e) => setNewCategoryName(e.target.value)}
                                 placeholder="Enter category name"
                             />
-                            <Button style={{marginRight: 10, backgroundColor: pink[50]}} onClick={() => { setShowTextField(false); handleAddCategory(newCategoryName); }}>Add</Button>
+                            <Button style={{marginRight: 10, backgroundColor: pink[50]}} onClick={() => {
+                                setShowTextField(false);
+                                handleAddCategory(newCategoryName);
+                            }}>Add</Button>
                         </div>
                     ) : (
-                        <Button  startIcon={ <AddCircleOutlineSharpIcon style={{color: pink[800]}}/>} style={{marginRight: 10, backgroundColor: pink[50]}} onClick={() => setShowTextField(true)}>Add Category</Button>
+                        <Button startIcon={<AddCircleOutlineSharpIcon style={{color: pink[800]}}/>}
+                                style={{marginRight: 10, backgroundColor: pink[50]}}
+                                onClick={() => setShowTextField(true)}>Add Category</Button>
                     )}
 
                 </div>
             </div>
             <div style={{flex: 3, width: 400}}>
-                <Paper className={"paper"} elevation={3} style={{padding: 20, margin: 20, width: "100%", minHeight: 600}}>
+                <Paper className={"paper"} elevation={3}
+                       style={{padding: 20, margin: 20, width: "100%", minHeight: 600}}>
 
                     <h2 className="category-header"> ToDo List</h2>
 
-                    {selectedCategory && (
+                    {/*if selectedCategory is not null, it displays the information about it*/}
+                    {selectedCategory !== null && (
                         <div style={{marginTop: 85}} key={selectedCategory.id}>
                             <div style={{display: "flex", justifyContent: "space-between", alignItems: "baseline"}}>
                                 <h2 className="category-text">{selectedCategory.name}</h2>
@@ -355,7 +345,7 @@ const getCategories = () => {
                                     }}
                                 >
                                     <FormControlLabel
-                                        sx={{backgroundColor: pink[50], borderRadius: 1,paddingInlineEnd:2}}
+                                        sx={{backgroundColor: pink[50], borderRadius: 1, paddingInlineEnd: 2}}
                                         control={
                                             <Checkbox
                                                 {...label}
@@ -373,6 +363,8 @@ const getCategories = () => {
                                         }
                                         label="Completed"
                                     />
+                                    {/*if add todo button is clicked hidden text-field will be in sight*/}
+
                                     {showTodoTextField ? (
                                         <div>
                                             <input
@@ -390,7 +382,11 @@ const getCategories = () => {
                                                 onChange={(e) => setNewTodoName(e.target.value)}
                                                 placeholder="Enter todo name"
                                             />
-                                            <Button style={{marginRight: 10, backgroundColor: pink[50]}} onClick={() => { setShowTodoTextField(false); handleAddTodo(selectedCategory.id, newTodoName); }}>Add</Button>
+                                            <Button style={{marginRight: 10, backgroundColor: pink[50]}}
+                                                    onClick={() => {
+                                                        setShowTodoTextField(false);
+                                                        handleAddTodo(selectedCategory.id, newTodoName);
+                                                    }}>Add</Button>
                                         </div>
                                     ) : (
                                         <Button
@@ -400,15 +396,13 @@ const getCategories = () => {
                                                 height: 33,
                                                 fontSize: 14,
                                             }}
-                                            onClick={() => setShowTodoTextField(true)} //handleAddTodo(selectedCategory.id)
+                                            onClick={() => setShowTodoTextField(true)}
                                             startIcon={<AddCircleOutlineSharpIcon style={{color: pink[800]}}/>}
                                         >
-
                                             Add Todo
                                         </Button>
                                     )}
-
-
+                                    {/*delete category button*/}
                                     <Button
                                         onClick={() => confirmDeleteCategory(selectedCategory)}
                                         style={{
@@ -417,7 +411,7 @@ const getCategories = () => {
                                             fontSize: 14,
                                             maxWidth: 188,
                                         }}
-                                        startIcon={ <DeleteOutlineIcon
+                                        startIcon={<DeleteOutlineIcon
                                             style={{color: pink[800]}}
                                         />}
                                     >
@@ -427,6 +421,7 @@ const getCategories = () => {
                                 </div>
                             </div>
                             <ul>
+                                {/*list of todos*/}
                                 {selectedCategory.todos.map((todo) => (
                                     <li key={todo.id + "" + selectedCategory.id}>
                                         <div style={{
@@ -450,6 +445,7 @@ const getCategories = () => {
                                             >
                                                 <span style={{flex: 10}}>{todo.description}</span>
                                                 <div style={{marginRight: 30}}>
+                                                    {/*slider for completion status*/}
                                                     <DiscreteBottomNavigation
                                                         started={todo.started}
                                                         completed={todo.completed}
@@ -469,6 +465,7 @@ const getCategories = () => {
                                                 alignItems: "center",
                                             }}
                                         >
+                                            {/*button to show/hide comments*/}
                                             <Button
                                                 onClick={() => toggleDetails(todo.id)}
                                                 variant="contained"
@@ -485,15 +482,15 @@ const getCategories = () => {
                                         </div>
 
                                         {detailsVisibility[todo.id] && (
-                                            <div style={{ marginTop: "16px" }}>
+                                            <div style={{marginTop: "16px"}}>
                                                 {todo.comments.map((comment) => (
                                                     <li key={comment.id} style={{display: "flex"}}>
                                                         <Card
                                                             variant="outlined"
                                                             sx={{
-                                                                marginLeft:5,
+                                                                marginLeft: 5,
                                                                 borderRadius: 5,
-                                                                width: { xs: "50%", sm: "max(400px, 80%)" },
+                                                                width: {xs: "50%", sm: "max(400px, 80%)"},
                                                                 height: "auto",
                                                                 boxShadow: 10,
                                                                 transition: "transform 0.3s ease-in-out",
@@ -506,18 +503,18 @@ const getCategories = () => {
                                                                 backgroundColor: "#00F4F437",
                                                             }}
                                                         >
-                                                            <Box sx={{ textAlign: "left" }}>
+                                                            <Box sx={{textAlign: "left"}}>
                                                                 <div
                                                                     style={{
                                                                         display: "flex",
                                                                     }}
                                                                 >
-                                                                    <MessageIcon />
+                                                                    <MessageIcon/>
 
                                                                     <Typography
                                                                         variant="subtitle2"
                                                                         color="text.secondary"
-                                                                        sx={{ marginLeft: 2 }}
+                                                                        sx={{marginLeft: 2}}
                                                                     >
                                                                         From: {comment.sender}
                                                                     </Typography>
@@ -525,19 +522,20 @@ const getCategories = () => {
                                                                     <Typography
                                                                         variant="subtitle2"
                                                                         color="text.secondary"
-                                                                        sx={{ marginLeft: 2 }}
+                                                                        sx={{marginLeft: 2}}
                                                                     >
                                                                         To: {comment.receiver}
                                                                     </Typography>
                                                                 </div>
-                                                                <Typography variant="body1" sx={{ mt: 2 }}>
+                                                                <Typography variant="body1" sx={{mt: 2}}>
                                                                     {comment.description}
                                                                 </Typography>
                                                             </Box>
 
                                                         </Card>
                                                         <Button onClick={() => confirmDeleteComment(comment)}>
-                                                            <DeleteOutlineIcon style={{color: "black", marginRight: 10}}/>
+                                                            <DeleteOutlineIcon
+                                                                style={{color: "black", marginRight: 10}}/>
                                                         </Button>
                                                     </li>
                                                 ))}
@@ -573,14 +571,14 @@ const getCategories = () => {
                                                         }}
                                                     />
                                                     <Button
-                                                        endIcon={<SendIcon />}
+                                                        endIcon={<SendIcon/>}
                                                         style={{
                                                             backgroundColor: green[50],
                                                             height: 35,
                                                             fontSize: 14,
                                                         }}
                                                         onClick={() => handleAddComment(todo.id)
-                                                    }
+                                                        }
                                                     >
                                                         Send
                                                     </Button>

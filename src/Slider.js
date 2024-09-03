@@ -6,15 +6,16 @@ import RestoreIcon from "@mui/icons-material/Restore";
 import HourglassEmptyIcon from "@mui/icons-material/HourglassEmpty";
 import DoneIcon from "@mui/icons-material/Done";
 
+// This component is used to display the status of the todo item
 const DiscreteBottomNavigation = ({
   started,
   completed,
   todoId,
   onSliderChange,
-  onMouseUp,
 }) => {
   const [value, setValue] = useState("");
 
+  // This useEffect hook is used to set the value of the slider based on the status of the todo item
   useEffect(() => {
     if (completed) {
       setValue(2);
@@ -25,10 +26,10 @@ const DiscreteBottomNavigation = ({
     }
   }, [started, completed]);
 
+  // This function is used to handle the change in the slider value
   const handleChange = (event, newValue) => {
     setValue(newValue);
     onSliderChange(newValue, todoId);
-    // onMouseUp(newValue, todoId);
   };
 
 

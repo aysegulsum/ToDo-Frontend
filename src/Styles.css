@@ -1,3 +1,9 @@
+/*
+    This file contains the styles for the application.
+*/
+/*
+    The styles for the pacman loader component.
+*/
 .loader {
     position: absolute;
     top: 0;
@@ -29,21 +35,6 @@
     text-align: center;
 }
 
-.back{
-    background-color: #373635;
-    text-align: center;
-    padding: 10px;
-    border-radius: 10px;
-}
-
-.login-paper{
-    background-color: #96949682;
-    padding: 30px;
-    margin: auto;
-    border-radius: 10px;
-    width: max-content;   
-}
-
 .category-paper{
     background-color: #96949682;
     padding: 30px;
@@ -51,6 +42,9 @@
     border-radius: 10px;
 
 }
+/*
+    The styles for the login page components.
+*/
 .welcome{
     background-color: #919695;
     background-image: url(http://www.transparenttextures.com/patterns/brick-wall-dark.png);
@@ -62,13 +56,35 @@ background-image: url(http://www.transparenttextures.com/patterns/brick-wall-dar
 padding: 50px 100px;
 margin: auto;
 }
+
+.login-paper{
+    background-color: #96949682;
+    padding: 30px;
+    margin: auto;
+    border-radius: 10px;
+    width: max-content;
+}
+
 .login-p{
-    
 background-color: #919695;
 background-image: url(http://www.transparenttextures.com/patterns/brick-wall-dark.png);
 padding: 160px;
 margin: auto;
 }
+
+.login-text {
+    color: #f7fafae2;
+    padding: 5px;
+    border-radius: 8px;
+    display: inline-block;
+    margin-left: 23%;
+    font-style: italic;
+
+}
+/*
+    The styles for the form component.
+*/
+
 .form-group{
     margin: 10px;
     display: flex;
@@ -95,16 +111,6 @@ margin: auto;
 
 .form-group label {
     border-radius: 5px;
-}
-
-.login-text {
-    color: #f7fafae2; 
-    padding: 5px; 
-    border-radius: 8px; 
-    display: inline-block;
-    margin-left: 23%;
-    font-style: italic;
-
 }
 
 .button{

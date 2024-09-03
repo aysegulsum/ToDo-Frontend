@@ -15,7 +15,7 @@ export default function LoginPage() {
   const [message, setMessage] = useState("");
   const Navigate = useNavigate();
 
-
+// Function to check if the login information is correct
   const handleLogin = async (e) => {
     e.preventDefault();
     setMessage("");
@@ -31,6 +31,7 @@ export default function LoginPage() {
         }),
       });
 
+      // If the response is 200, the user is authenticated and the user is navigated to the userpage
       const messageFromServer = await response.text();
       if (response.status === 200) {
         localStorage.setItem("isAuthenticated", "true");

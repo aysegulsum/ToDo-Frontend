@@ -8,10 +8,11 @@ import ProtectedRoute from "./ProtectedRoute";
 import { PacmanLoader } from 'react-spinners';
 
 function App() {
-  const [message, setMessage] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [message, setMessage] = useState("");//welcome message
+  const [loading, setLoading] = useState(false);//loading spinner
+  const [isAuthenticated, setIsAuthenticated] = useState(false);//authentication information
 
+  //loading spinner
   useEffect(() => {
     setLoading(true);
     setTimeout(() => {
@@ -19,6 +20,7 @@ function App() {
     }, 1780);
   }, [isAuthenticated]);
 
+  //fetching welcome message
   useEffect(() => {
     fetch("http://localhost:8080/welcome")
       .then((response) => response.text())
@@ -27,6 +29,7 @@ function App() {
   }, []);
 
   return (
+
     <BrowserRouter>
       {loading ? (
         <div className="loader">
@@ -47,5 +50,4 @@ function App() {
     </BrowserRouter>
   );
 }
-
 export default App;
