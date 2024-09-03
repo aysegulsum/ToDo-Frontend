@@ -122,7 +122,7 @@ const UserPage = () => {
             .then((response) => response.text())
             .then((data) => {
                 console.log("Success:", data);
-                //window.location.reload();
+
             })
             .catch((error) => {
                 console.error("Error:", error);
